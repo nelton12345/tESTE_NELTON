@@ -1,0 +1,1793 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dicionário de Gírias</title>
+    <style>
+        /* Reset e estilos básicos */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8f9fa;
+        }
+
+        /* Cabeçalho */
+        header {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: white;
+            padding: 1.5rem 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .description {
+            font-size: 1.1rem;
+            text-align: center;
+            max-width: 800px;
+            margin-bottom: 1rem;
+        }
+
+        /* Barra de pesquisa */
+        .search-container {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .search-box {
+            display: flex;
+            width: 100%;
+        }
+
+        #search-input {
+            flex: 1;
+            padding: 12px 16px;
+            border: none;
+            border-radius: 30px 0 0 30px;
+            font-size: 1rem;
+            outline: none;
+        }
+
+        #search-button {
+            padding: 12px 20px;
+            background-color: #ff6b6b;
+            color: white;
+            border: none;
+            border-radius: 0 30px 30px 0;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+
+        #search-button:hover {
+            background-color: #ff5252;
+        }
+
+        /* Menu de letras */
+        .letters-menu {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 1.5rem;
+            padding: 0.5rem;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+
+        .letter-btn {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .letter-btn:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .letter-btn.active {
+            background-color: #ff6b6b;
+            transform: scale(1.1);
+        }
+
+        /* Conteúdo principal */
+        main {
+            padding: 2rem 0;
+            min-height: calc(100vh - 200px);
+        }
+
+        .letter-section {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .letter-section.active {
+            display: block;
+        }
+
+        .letter-title {
+            font-size: 2.5rem;
+            color: #6a11cb;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            border-bottom: 3px solid #6a11cb;
+            padding-bottom: 0.5rem;
+        }
+
+        /* Grid de gírias */
+        .slang-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .slang-card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .slang-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
+        }
+
+        .slang-term {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: #2575fc;
+            margin-bottom: 0.5rem;
+        }
+
+        .slang-meaning {
+            color: #555;
+            margin-bottom: 1rem;
+        }
+
+        .copy-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #f0f0f0;
+            border: none;
+            border-radius: 5px;
+            padding: 5px 10px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .copy-btn:hover {
+            background-color: #e0e0e0;
+        }
+
+        /* Rodapé */
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 1.5rem 0;
+            margin-top: 2rem;
+        }
+
+        /* Animações */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .slang-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .letters-menu {
+                gap: 5px;
+            }
+            
+            .letter-btn {
+                width: 35px;
+                height: 35px;
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header-content {
+                gap: 0.8rem;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .description {
+                font-size: 1rem;
+            }
+            
+            .letter-title {
+                font-size: 2rem;
+            }
+        }
+
+        /* Mensagem de cópia */
+        .copy-notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .copy-notification.show {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <h1>Dicionário de Gírias</h1>
+                <p class="description">Explore mais de 1300 gírias brasileiras e seus significados. Encontre a expressão que você procura!</p>
+                
+                <div class="search-container">
+                    <div class="search-box">
+                        <input type="text" id="search-input" placeholder="Pesquisar gírias ou significados...">
+                        <button id="search-button">Buscar</button>
+                    </div>
+                </div>
+                
+                <div class="letters-menu" id="letters-menu">
+                    <!-- As letras serão geradas via JavaScript -->
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <div id="content">
+            <!-- O conteúdo das letras será carregado aqui via JavaScript -->
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>Dicionário de Gírias &copy; 2023 - Todos os direitos reservados</p>
+        </div>
+    </footer>
+
+    <div class="copy-notification" id="copy-notification">Gíria copiada para a área de transferência!</div>
+
+    <script>
+        // Dados das gírias - 50 gírias para cada letra do alfabeto
+        const slangData = {
+            "A": [
+                { term: "Arrasar", meaning: "Fazer algo muito bem, com excelência" },
+                { term: "Amigão", meaning: "Amigo próximo, confidente" },
+                { term: "Arrochar", meaning: "Fazer algo com intensidade, esforçar-se" },
+                { term: "Afogar o ganso", meaning: "Beber muito álcool" },
+                { term: "Azedar", meaning: "Estragar, dar errado" },
+                { term: "Arrebentar", meaning: "Fazer algo muito bem, impressionar" },
+                { term: "Aloprar", meaning: "Agir de forma exagerada, bagunçar" },
+                { term: "Abestalhado", meaning: "Pessoa desatenta, desorientada" },
+                { term: "Apertar", meaning: "Fazer pressão, pressionar alguém" },
+                { term: "Arrumar confusão", meaning: "Procurar briga, criar problemas" },
+                { term: "Abestado", meaning: "Pessoa boba, desajeitada" },
+                { term: "Arregaçar", meaning: "Trabalhar muito, esforçar-se" },
+                { term: "Abrir o jogo", meaning: "Revelar a verdade, ser sincero" },
+                { term: "Amarelar", meaning: "Recuar, desistir por medo" },
+                { term: "Arraso", meaning: "Sucesso, algo muito bom" },
+                { term: "Arrochado", meaning: "Algo difícil, complicado" },
+                { term: "Azedo", meaning: "Pessoa mal-humorada" },
+                { term: "Arrebentado", meaning: "Muito cansado, exausto" },
+                { term: "Aloprado", meaning: "Pessoa agitada, descontrolada" },
+                { term: "Abestado", meaning: "Pessoa desajeitada, sem noção" },
+                { term: "Apertado", meaning: "Sem dinheiro, em situação financeira difícil" },
+                { term: "Arrumado", meaning: "Bem vestido, arrumado" },
+                { term: "Abrir a guarda", meaning: "Baixar a defesa, ficar vulnerável" },
+                { term: "Amarelado", meaning: "Pessoa covarde, que recua" },
+                { term: "Arrasador", meaning: "Algo impressionante, extraordinário" },
+                { term: "Arrochar o passo", meaning: "Acelerar, andar mais rápido" },
+                { term: "Azedar o clima", meaning: "Tornar o ambiente desagradável" },
+                { term: "Arrebentar a boca do balão", meaning: "Fazer algo extraordinário" },
+                { term: "Alopração", meaning: "Bagunça, confusão" },
+                { term: "Abestamento", meaning: "Estado de confusão, desorientação" },
+                { term: "Apertar os cintos", meaning: "Economizar, gastar menos" },
+                { term: "Arrumar o pau", meaning: "Preparar-se para brigar" },
+                { term: "Abrir o coração", meaning: "Revelar sentimentos íntimos" },
+                { term: "Amarelar na hora H", meaning: "Desistir no último momento" },
+                { term: "Arraso total", meaning: "Sucesso absoluto" },
+                { term: "Arrochada", meaning: "Situação difícil, complicada" },
+                { term: "Azedume", meaning: "Mau humor, irritação" },
+                { term: "Arrebentação", meaning: "Cansaço extremo, exaustão" },
+                { term: "Aloprar a festa", meaning: "Bagunçar a festa, causar confusão" },
+                { term: "Abestalhar", meaning: "Deixar confuso, desorientar" },
+                { term: "Apertar o passo", meaning: "Acelerar, andar mais rápido" },
+                { term: "Arrumar a casa", meaning: "Organizar, colocar em ordem" },
+                { term: "Abrir os olhos", meaning: "Perceber a realidade, ficar esperto" },
+                { term: "Amarelo", meaning: "Pessoa covarde, medrosa" },
+                { term: "Arrasar na apresentação", meaning: "Fazer uma apresentação excelente" },
+                { term: "Arrochar no trabalho", meaning: "Trabalhar com muita dedicação" },
+                { term: "Azedar a relação", meaning: "Estragar o relacionamento" },
+                { term: "Arrebentar na carreira", meaning: "Ter muito sucesso profissional" },
+                { term: "Alopração total", meaning: "Confusão generalizada" },
+                { term: "Abestado completo", meaning: "Pessoa muito desajeitada" }
+            ],
+            "B": [
+                { term: "Bacaninha", meaning: "Algo legal, agradável" },
+                { term: "Bala", meaning: "Pessoa bonita, atraente" },
+                { term: "Bagunçar", meaning: "Causar confusão, desorganizar" },
+                { term: "Bater papo", meaning: "Conversar informalmente" },
+                { term: "Bico", meaning: "Trabalho temporário, informal" },
+                { term: "Bafo", meaning: "Mau hálito" },
+                { term: "Barrar", meaning: "Impedir, bloquear" },
+                { term: "Bater a meta", meaning: "Alcançar o objetivo estabelecido" },
+                { term: "Bicho grilo", meaning: "Pessoa desconfiada, estranha" },
+                { term: "Bombar", meaning: "Fazer sucesso, ficar popular" },
+                { term: "Breguice", meaning: "Algo cafona, fora de moda" },
+                { term: "Bater o ponto", meaning: "Registrar entrada/saída no trabalho" },
+                { term: "Bicho de pé", meaning: "Pessoa chata, insistente" },
+                { term: "Bombado", meaning: "Musculoso, com músculos desenvolvidos" },
+                { term: "Brega", meaning: "Algo fora de moda, cafona" },
+                { term: "Bater um rango", meaning: "Comer algo" },
+                { term: "Bicho do mato", meaning: "Pessoa do interior, caipira" },
+                { term: "Bombástico", meaning: "Algo impressionante, espetacular" },
+                { term: "Breque", meaning: "Freio, parada brusca" },
+                { term: "Bater um papo", meaning: "Conversar" },
+                { term: "Bicho solto", meaning: "Pessoa livre, sem compromissos" },
+                { term: "Bombar nas redes", meaning: "Fazer sucesso nas redes sociais" },
+                { term: "Brecar", meaning: "Parar, frear" },
+                { term: "Bater uma laje", meaning: "Fazer uma refeição" },
+                { term: "Bichar", meaning: "Estranhar, desconfiar" },
+                { term: "Bombando", meaning: "Fazendo sucesso, popular" },
+                { term: "Brega total", meaning: "Muito cafona" },
+                { term: "Bater o carro", meaning: "Colidir com o carro" },
+                { term: "Bichano", meaning: "Gato" },
+                { term: "Bomba", meaning: "Algo que deu errado, fracasso" },
+                { term: "Brejinha", meaning: "Cerveja" },
+                { term: "Bater o martelo", meaning: "Tomar uma decisão definitiva" },
+                { term: "Bicho de estimação", meaning: "Animal doméstico" },
+                { term: "Bombar o evento", meaning: "Tornar o evento um sucesso" },
+                { term: "Brega chic", meaning: "Algo cafona mas com estilo" },
+                { term: "Bater recorde", meaning: "Superar uma marca anterior" },
+                { term: "Bicharada", meaning: "Grupo de animais" },
+                { term: "Bomba relógio", meaning: "Situação perigosa que pode explodir" },
+                { term: "Brega funk", meaning: "Música funk com letras cafonas" },
+                { term: "Bater na mesma tecla", meaning: "Repetir a mesma coisa" },
+                { term: "Bichinho", meaning: "Animal pequeno" },
+                { term: "Bombar no YouTube", meaning: "Fazer sucesso no YouTube" },
+                { term: "Brega raiz", meaning: "Algo cafona no estilo antigo" },
+                { term: "Bater o sinal", meaning: "Terminar o expediente" },
+                { term: "Bichar o ovo", meaning: "Estragar, complicar" },
+                { term: "Bomba patch", meaning: "Jogo de futebol PES" },
+                { term: "Brega sofisticado", meaning: "Algo cafona mas com classe" },
+                { term: "Bater o pé", meaning: "Ser teimoso, insistir" },
+                { term: "Bichano esperto", meaning: "Gato inteligente" },
+                { term: "Bomba na certa", meaning: "Algo que certamente dará errado" }
+            ],
+            "C": [
+                { term: "Cabuloso", meaning: "Algo incrível, impressionante" },
+                { term: "Cara", meaning: "Pessoa, indivíduo" },
+                { term: "Chutar o balde", meaning: "Desistir, perder a paciência" },
+                { term: "Cara de pau", meaning: "Pessoa sem vergonha, desavergonhada" },
+                { term: "Chorar as pitangas", meaning: "Reclamar muito" },
+                { term: "Cair na real", meaning: "Perceber a realidade" },
+                { term: "Cara de paisagem", meaning: "Expressão vazia, sem reação" },
+                { term: "Chamar atenção", meaning: "Fazer algo para ser notado" },
+                { term: "Cair fora", meaning: "Ir embora, sair" },
+                { term: "Cara feia", meaning: "Expressão de descontentamento" },
+                { term: "Chamar para o jogo", meaning: "Convidar para participar" },
+                { term: "Cair na besteira", meaning: "Cometer um erro" },
+                { term: "Cara de um, focinho do outro", meaning: "Pessoas muito parecidas" },
+                { term: "Chamar para a realidade", meaning: "Fazer alguém perceber a verdade" },
+                { term: "Cair na pilha", meaning: "Acreditar em algo falso" },
+                { term: "Cara de santinho", meaning: "Pessoa que parece inocente" },
+                { term: "Chamar para a responsa", meaning: "Cobrar responsabilidade" },
+                { term: "Cair na graça", meaning: "Conquistar a simpatia" },
+                { term: "Cara de pau mesmo", meaning: "Muito desavergonhado" },
+                { term: "Chamar para o abraço", meaning: "Convidar para uma briga" },
+                { term: "Cair na rotina", meaning: "Entrar na mesmice" },
+                { term: "Cara de choro", meaning: "Expressão de tristeza" },
+                { term: "Chamar para o xeque", meaning: "Desafiar, confrontar" },
+                { term: "Cair na estrada", meaning: "Viajar, partir" },
+                { term: "Cara de sono", meaning: "Parecendo cansado" },
+                { term: "Chamar para a conversa", meaning: "Convidar para dialogar" },
+                { term: "Cair na fossa", meaning: "Ficar deprimido" },
+                { term: "Cara de poucos amigos", meaning: "Pessoa fechada, séria" },
+                { term: "Chamar para o desafio", meaning: "Convidar para competir" },
+                { term: "Cair na risada", meaning: "Começar a rir" },
+                { term: "Cara de paisagem mesmo", meaning: "Completamente sem reação" },
+                { term: "Chamar para a aventura", meaning: "Convidar para algo emocionante" },
+                { term: "Cair na tentação", meaning: "Ceder à tentação" },
+                { term: "Cara de espanto", meaning: "Expressão de surpresa" },
+                { term: "Chamar para o perigo", meaning: "Convidar para algo arriscado" },
+                { term: "Cair na fita", meaning: "Aparecer, chegar" },
+                { term: "Cara de tédio", meaning: "Expressão entediada" },
+                { term: "Chamar para a festa", meaning: "Convidar para celebrar" },
+                { term: "Cair na malandragem", meaning: "Tornar-se malandro" },
+                { term: "Cara de preocupação", meaning: "Expressão preocupada" },
+                { term: "Chamar para o time", meaning: "Convidar para participar do grupo" },
+                { term: "Cair na besteira alheia", meaning: "Acreditar em mentiras" },
+                { term: "Cara de susto", meaning: "Expressão assustada" },
+                { term: "Chamar para o corre", meaning: "Convidar para trabalhar" },
+                { term: "Cair na real rapidinho", meaning: "Perceber a realidade rápido" },
+                { term: "Cara de desespero", meaning: "Expressão desesperada" },
+                { term: "Chamar para o rolê", meaning: "Convidar para sair" },
+                { term: "Cair na pilha errada", meaning: "Acreditar em coisa errada" },
+                { term: "Cara de contentamento", meaning: "Expressão feliz" }
+            ],
+            "D": [
+                { term: "Dar uma força", meaning: "Ajudar, dar suporte" },
+                { term: "De boa", meaning: "Tudo bem, tranquilo" },
+                { term: "Dar um jeito", meaning: "Resolver, arranjar solução" },
+                { term: "De repente", meaning: "Talvez, possivelmente" },
+                { term: "Dar uma mão", meaning: "Ajudar" },
+                { term: "De leve", meaning: "Devagar, com calma" },
+                { term: "Dar uma de", meaning: "Fingir, fazer papel de" },
+                { term: "De cara", meaning: "Imediatamente, de primeira" },
+                { term: "Dar uma chance", meaning: "Oportunizar, permitir" },
+                { term: "De fato", meaning: "Realmente, verdadeiramente" },
+                { term: "Dar uma folga", meaning: "Dar descanso, aliviar" },
+                { term: "De vez em quando", meaning: "Ocasionalmente" },
+                { term: "Dar uma espiada", meaning: "Olhar rapidamente" },
+                { term: "De brinde", meaning: "Gratuitamente, de presente" },
+                { term: "Dar uma sumida", meaning: "Desaparecer por um tempo" },
+                { term: "De última hora", meaning: "No último momento" },
+                { term: "Dar uma palhinha", meaning: "Ajudar um pouco" },
+                { term: "De propósito", meaning: "Intencionalmente" },
+                { term: "Dar uma moral", meaning: "Apoiar, ajudar" },
+                { term: "De qualquer jeito", meaning: "De qualquer maneira" },
+                { term: "Dar uma ligada", meaning: "Telefonar" },
+                { term: "De olho", meaning: "Observando atentamente" },
+                { term: "Dar uma passada", meaning: "Visitar, ir até" },
+                { term: "De surpresa", meaning: "Sem avisar" },
+                { term: "Dar uma maneirada", meaning: "Acalmar-se, moderar" },
+                { term: "De longe", meaning: "Com certeza, definitivamente" },
+                { term: "Dar uma escorregada", meaning: "Visitar rapidamente" },
+                { term: "De má fé", meaning: "Com intenção ruim" },
+                { term: "Dar uma segurada", meaning: "Parar, conter" },
+                { term: "De cor", meaning: "Memorizado" },
+                { term: "Dar uma fugidinha", meaning: "Sair rapidamente" },
+                { term: "De antemão", meaning: "Antecipadamente" },
+                { term: "Dar uma esticada", meaning: "Prolongar, alongar" },
+                { term: "De ouvido", meaning: "Sem partitura, pela memória" },
+                { term: "Dar uma esfriada", meaning: "Acalmar os ânimos" },
+                { term: "De cima", meaning: "Das autoridades" },
+                { term: "Dar uma aliviada", meaning: "Tornar mais leve" },
+                { term: "De baixo", meaning: "Do povo, das bases" },
+                { term: "Dar uma levantada", meaning: "Melhorar, recuperar" },
+                { term: "De dentro", meaning: "Do grupo, interno" },
+                { term: "Dar uma melhorada", meaning: "Aprimorar, melhorar" },
+                { term: "De fora", meaning: "Externo, estrangeiro" },
+                { term: "Dar uma respirada", meaning: "Descansar um pouco" },
+                { term: "De frente", meaning: "Corajosamente" },
+                { term: "Dar uma afastada", meaning: "Distanciar-se" },
+                { term: "De costas", meaning: "Sem ver, às escondidas" },
+                { term: "Dar uma aparada", meaning: "Ajustar, corrigir" },
+                { term: "De lado", meaning: "Ignorando, evitando" },
+                { term: "Dar uma balanceada", meaning: "Sacudir, movimentar" }
+            ],
+            "E": [
+                { term: "É nóis", meaning: "Expressão de confirmação, 'é nós'" },
+                { term: "É isso aí", meaning: "Concordância, aprovação" },
+                { term: "É mole?", meaning: "Expressão de incredulidade" },
+                { term: "É brincadeira", meaning: "Expressão de surpresa" },
+                { term: "É verdade", meaning: "Confirmação, concordância" },
+                { term: "É sério", meaning: "Afirmação de veracidade" },
+                { term: "É agora", meaning: "Momento decisivo" },
+                { term: "É pra já", meaning: "Imediatamente" },
+                { term: "É de lei", meaning: "Obrigatório, indispensável" },
+                { term: "É o fim", meaning: "Situação insuportável" },
+                { term: "É complicado", meaning: "Situação difícil" },
+                { term: "É rapidinho", meaning: "Algo rápido" },
+                { term: "É facinho", meaning: "Algo fácil" },
+                { term: "É baratinho", meaning: "Algo barato" },
+                { term: "É gostosinho", meaning: "Algo prazeroso" },
+                { term: "É tranquilo", meaning: "Algo fácil, sem problemas" },
+                { term: "É suave", meaning: "Algo fácil, tranquilo" },
+                { term: "É de boa", meaning: "Sem problemas" },
+                { term: "É massa", meaning: "Algo legal, bom" },
+                { term: "É irado", meaning: "Algo incrível" },
+                { term: "É top", meaning: "Algo excelente" },
+                { term: "É show", meaning: "Algo muito bom" },
+                { term: "É demais", meaning: "Algo extraordinário" },
+                { term: "É brabo", meaning: "Algo difícil ou impressionante" },
+                { term: "É osso", meaning: "Algo difícil" },
+                { term: "É tenso", meaning: "Situação difícil" },
+                { term: "É pesado", meaning: "Situação difícil" },
+                { term: "É loucura", meaning: "Algo insano, incrível" },
+                { term: "É doideira", meaning: "Algo muito estranho" },
+                { term: "É viagem", meaning: "Algo surreal" },
+                { term: "É mentira", meaning: "Afirmação de falsidade" },
+                { term: "É pegadinha", meaning: "Brincadeira, armadilha" },
+                { term: "É caô", meaning: "É mentira" },
+                { term: "É balela", meaning: "É conversa fiada" },
+                { term: "É papo furado", meaning: "É mentira" },
+                { term: "É enrolação", meaning: "É procrastinação" },
+                { term: "É sacanagem", meaning: "É brincadeira de mau gosto" },
+                { term: "É zoeira", meaning: "É brincadeira" },
+                { term: "É trollagem", meaning: "É provocação" },
+                { term: "É meme", meaning: "É piada, brincadeira" },
+                { term: "É real", meaning: "É verdade" },
+                { term: "É fato", meaning: "É verdade comprovada" },
+                { term: "É certo", meaning: "É garantido" },
+                { term: "É claro", meaning: "É óbvio" },
+                { term: "É lógico", meaning: "É evidente" },
+                { term: "É natural", meaning: "É esperado" },
+                { term: "É normal", meaning: "É comum" },
+                { term: "É usual", meaning: "É habitual" },
+                { term: "É frequente", meaning: "Acontece sempre" }
+            ],
+            "F": [
+                { term: "Firmeza", meaning: "Confiança, lealdade" },
+                { term: "Falou", meaning: "Expressão de despedida, 'tchau'" },
+                { term: "Fazer a festa", meaning: "Aproveitar, se divertir" },
+                { term: "Fazer hora", meaning: "Passar o tempo, esperar" },
+                { term: "Fazer vista grossa", meaning: "Ignorar, fingir que não viu" },
+                { term: "Fazer cosplay", meaning: "Imitar, fazer papel de" },
+                { term: "Fazer média", meaning: "Tentar agradar" },
+                { term: "Fazer a cabeça", meaning: "Convencer, influenciar" },
+                { term: "Fazer corpo mole", meaning: "Agir com preguiça" },
+                { term: "Fazer a lição de casa", meaning: "Preparar-se adequadamente" },
+                { term: "Fazer tempestade em copo d'água", meaning: "Exagerar na reação" },
+                { term: "Fazer das tripas coração", meaning: "Esforçar-se ao máximo" },
+                { term: "Fazer a caveira", meaning: "Falar mal de alguém" },
+                { term: "Fazer bonito", meaning: "Ter um bom desempenho" },
+                { term: "Fazer feio", meaning: "Ter um mau desempenho" },
+                { term: "Fazer sucesso", meaning: "Ser popular, admirado" },
+                { term: "Fazer suarte", meaning: "Sumir, desaparecer" },
+                { term: "Fazer o corre", meaning: "Trabalhar, batalhar" },
+                { term: "Fazer a boa", meaning: "Ajudar, fazer um favor" },
+                { term: "Fazer a festa", meaning: "Aproveitar a situação" },
+                { term: "Fazer a mente", meaning: "Refletir, pensar" },
+                { term: "Fazer a limpa", meaning: "Limpar, organizar tudo" },
+                { term: "Fazer a mala", meaning: "Preparar as malas, arrumar" },
+                { term: "Fazer a cama", meaning: "Preparar armadilha" },
+                { term: "Fazer a vez", meaning: "Substituir, fazer o papel de" },
+                { term: "Fazer a diferença", meaning: "Ter importância, impactar" },
+                { term: "Fazer a noite", meaning: "Passar a noite acordado" },
+                { term: "Fazer a vida", meaning: "Trabalhar, ganhar a vida" },
+                { term: "Fazer a cabeça do outro", meaning: "Influenciar alguém" },
+                { term: "Fazer a cabeça da galera", meaning: "Influenciar o grupo" },
+                { term: "Fazer a cabeça do povo", meaning: "Influenciar as pessoas" },
+                { term: "Fazer a cabeça da massa", meaning: "Influenciar a multidão" },
+                { term: "Fazer a cabeça da turma", meaning: "Influenciar os amigos" },
+                { term: "Fazer a cabeça da família", meaning: "Influenciar os familiares" },
+                { term: "Fazer a cabeça da empresa", meaning: "Influenciar na empresa" },
+                { term: "Fazer a cabeça do time", meaning: "Influenciar o grupo" },
+                { term: "Fazer a cabeça do pessoal", meaning: "Influenciar as pessoas" },
+                { term: "Fazer a cabeça da rapaziada", meaning: "Influenciar os jovens" },
+                { term: "Fazer a cabeça da moçada", meaning: "Influenciar a juventude" },
+                { term: "Fazer a cabeça da gurizada", meaning: "Influenciar as crianças" },
+                { term: "Fazer a cabeça da meninada", meaning: "Influenciar os jovens" },
+                { term: "Fazer a cabeça da garotada", meaning: "Influenciar as crianças" },
+                { term: "Fazer a cabeça da molecada", meaning: "Influenciar os adolescentes" },
+                { term: "Fazer a cabeça da juventude", meaning: "Influenciar os jovens" },
+                { term: "Fazer a cabeça da nova geração", meaning: "Influenciar os mais novos" },
+                { term: "Fazer a cabeça das pessoas", meaning: "Influenciar indivíduos" },
+                { term: "Fazer a cabeça do público", meaning: "Influenciar a audiência" },
+                { term: "Fazer a cabeça da sociedade", meaning: "Influenciar a comunidade" }
+            ],
+            "G": [
+                { term: "Gato", meaning: "Pessoa bonita, atraente" },
+                { term: "Grana", meaning: "Dinheiro" },
+                { term: "Galo", meaning: "Briga, confusão" },
+                { term: "Graúdo", meaning: "Importante, influente" },
+                { term: "Gastar", meaning: "Usar dinheiro, esbanjar" },
+                { term: "Gostosão", meaning: "Pessoa muito atraente" },
+                { term: "Gostosona", meaning: "Mulher muito atraente" },
+                { term: "Ganhar", meaning: "Obter, conquistar" },
+                { term: "Ganhar a vida", meaning: "Sustentar-se, trabalhar" },
+                { term: "Ganhar tempo", meaning: "Adiar, procrastinar" },
+                { term: "Ganhar espaço", meaning: "Conquistar lugar, importância" },
+                { term: "Ganhar confiança", meaning: "Conquistar credibilidade" },
+                { term: "Ganhar respeito", meaning: "Conquistar admiração" },
+                { term: "Ganhar notoriedade", meaning: "Tornar-se conhecido" },
+                { term: "Ganhar popularidade", meaning: "Tornar-se famoso" },
+                { term: "Ganhar destaque", meaning: "Sobressair, destacar-se" },
+                { term: "Ganhar força", meaning: "Fortalecer-se" },
+                { term: "Ganhar momentum", meaning: "Ganhar impulso" },
+                { term: "Ganhar tração", meaning: "Ganhar adesão, apoio" },
+                { term: "Ganhar corpo", meaning: "Desenvolver-se, crescer" },
+                { term: "Ganhar forma", meaning: "Tomar forma, concretizar-se" },
+                { term: "Ganhar vida", meaning: "Tornar-se real, animar-se" },
+                { term: "Ganhar alma", meaning: "Adquirir personalidade" },
+                { term: "Ganhar cor", meaning: "Tornar-se vivo, interessante" },
+                { term: "Ganhar brilho", meaning: "Tornar-se atraente" },
+                { term: "Ganhar luz", meaning: "Tornar-se claro, compreensível" },
+                { term: "Ganhar sentido", meaning: "Tornar-se compreensível" },
+                { term: "Ganhar significado", meaning: "Adquirir importância" },
+                { term: "Ganhar valor", meaning: "Tornar-se valioso" },
+                { term: "Ganhar preço", meaning: "Valorizar-se" },
+                { term: "Ganhar mercado", meaning: "Conquistar espaço comercial" },
+                { term: "Ganhar clientes", meaning: "Conquistar consumidores" },
+                { term: "Ganhar seguidores", meaning: "Conquistar adeptos" },
+                { term: "Ganhar fãs", meaning: "Conquistar admiradores" },
+                { term: "Ganhar amigos", meaning: "Conquistar amizades" },
+                { term: "Ganhar inimigos", meaning: "Criar adversários" },
+                { term: "Ganhar desafetos", meaning: "Criar antipatias" },
+                { term: "Ganhar oposição", meaning: "Enfrentar resistência" },
+                { term: "Ganhar críticas", meaning: "Receber avaliações negativas" },
+                { term: "Ganhar elogios", meaning: "Receber avaliações positivas" },
+                { term: "Ganhar reconhecimento", meaning: "Ser valorizado" },
+                { term: "Ganhar prêmios", meaning: "Ser premiado" },
+                { term: "Ganhar honrarias", meaning: "Receber honras" },
+                { term: "Ganhar medalhas", meaning: "Ser condecorado" },
+                { term: "Ganhar troféus", meaning: "Conquistar premiações" },
+                { term: "Ganhar títulos", meaning: "Conquistar posições" },
+                { term: "Ganhar status", meaning: "Adquirir posição social" },
+                { term: "Ganhar poder", meaning: "Adquirir influência" }
+            ],
+            "H": [
+                { term: "Hackear", meaning: "Resolver de forma criativa, improvisar" },
+                { term: "Hard", meaning: "Difícil, complicado" },
+                { term: "Hater", meaning: "Pessoa que critica negativamente" },
+                { term: "Hipster", meaning: "Pessoa que segue tendências alternativas" },
+                { term: "Hashtag", meaning: "Palavra-chave em redes sociais" },
+                { term: "Hype", meaning: "Expectativa, agitação em torno de algo" },
+                { term: "Humor", meaning: "Estado de espírito, disposição" },
+                { term: "Habilidade", meaning: "Capacidade, destreza" },
+                { term: "Harmonia", meaning: "Convívio pacífico, concordância" },
+                { term: "Herói", meaning: "Pessoa admirada, salvador" },
+                { term: "História", meaning: "Narrativa, acontecimento" },
+                { term: "Honra", meaning: "Dignidade, respeito" },
+                { term: "Horizonte", meaning: "Perspectiva, futuro" },
+                { term: "Hospedagem", meaning: "Local de permanência temporária" },
+                { term: "Humanidade", meaning: "Espécie humana, compaixão" },
+                { term: "Humildade", meaning: "Modéstia, simplicidade" },
+                { term: "Humorado", meaning: "De bom humor" },
+                { term: "Habilitado", meaning: "Capacitado, autorizado" },
+                { term: "Harmonioso", meaning: "Equilibrado, agradável" },
+                { term: "Habitual", meaning: "Corriqueiro, usual" },
+                { term: "Híbrido", meaning: "Misto, combinado" },
+                { term: "Horizontal", meaning: "Plano, nivelado" },
+                { term: "Honrado", meaning: "Íntegro, correto" },
+                { term: "Hospitaleiro", meaning: "Acollhedor, receptivo" },
+                { term: "Humanizado", meaning: "Com características humanas" },
+                { term: "Humorístico", meaning: "Engraçado, cômico" },
+                { term: "Higiênico", meaning: "Limpo, sanitizado" },
+                { term: "Histórico", meaning: "Relativo à história, importante" },
+                { term: "Honroso", meaning: "Digno, meritório" },
+                { term: "Habitável", meaning: "Próprio para morar" },
+                { term: "Harmônico", meaning: "Musical, consonante" },
+                { term: "Heterogêneo", meaning: "Diverso, variado" },
+                { term: "Homogêneo", meaning: "Uniforme, igual" },
+                { term: "Horizontalizado", meaning: "Nivelado, equalizado" },
+                { term: "Humanitário", meaning: "Caridoso, benemérito" },
+                { term: "Hipotético", meaning: "Suposto, teórico" },
+                { term: "Habitacional", meaning: "Relativo à moradia" },
+                { term: "Honorário", meaning: "Titular, sem vencimento" },
+                { term: "Higiênico-sanitário", meaning: "Relativo à saúde e limpeza" },
+                { term: "Historiográfico", meaning: "Relativo ao registro histórico" },
+                { term: "Horizontizado", meaning: "Expandido, ampliado" },
+                { term: "Hospitalizado", meaning: "Internado em hospital" },
+                { term: "Humanizado", meaning: "Com tratamento humanitário" },
+                { term: "Humorado", meaning: "Com humor inserido" },
+                { term: "Habilitativo", meaning: "Que permite habilitação" },
+                { term: "Harmonizador", meaning: "Que promove harmonia" },
+                { term: "Hibridizado", meaning: "Misturado, combinado" },
+                { term: "Horizontalizador", meaning: "Que nivela, equaliza" }
+            ],
+            "I": [
+                { term: "Irado", meaning: "Incrível, fantástico" },
+                { term: "Ir na onda", meaning: "Seguir a tendência, concordar" },
+                { term: "Intankável", meaning: "Insuportável, difícil de aguentar" },
+                { term: "Invejoso", meaning: "Pessoa que sente inveja" },
+                { term: "Influencer", meaning: "Pessoa com influência nas redes" },
+                { term: "Insano", meaning: "Incrível, extraordinário" },
+                { term: "Intenso", meaning: "Forte, profundo" },
+                { term: "Interessante", meaning: "Curioso, atraente" },
+                { term: "Importante", meaning: "Relevante, significativo" },
+                { term: "Inteligente", meaning: "Esperto, sagaz" },
+                { term: "Intuitivo", meaning: "Perceptivo, instintivo" },
+                { term: "Inovador", meaning: "Criativo, original" },
+                { term: "Inspirador", meaning: "Que motiva, incentiva" },
+                { term: "Incansável", meaning: "Infatigável, persistente" },
+                { term: "Inconformado", meaning: "Que não aceita, rebelde" },
+                { term: "Independente", meaning: "Autônomo, livre" },
+                { term: "Interativo", meaning: "Que permite interação" },
+                { term: "Integrado", meaning: "Unificado, harmonizado" },
+                { term: "Integral", meaning: "Completo, total" },
+                { term: "Intrínseco", meaning: "Essencial, inerente" },
+                { term: "Inevitável", meaning: "Certro, impossível de evitar" },
+                { term: "Infinito", meaning: "Sem fim, eterno" },
+                { term: "Inigualável", meaning: "Sem igual, único" },
+                { term: "Incomparável", meaning: "Que não tem comparação" },
+                { term: "Incontestável", meaning: "Indiscutível, incontestado" },
+                { term: "Inconfundível", meaning: "Que não se confunde" },
+                { term: "Incontornável", meaning: "Impossível de contornar" },
+                { term: "Inconquistável", meaning: "Impossível de conquistar" },
+                { term: "Incontrolável", meaning: "Impossível de controlar" },
+                { term: "Inconveniente", meaning: "Inadequado, inoportuno" },
+                { term: "Incômodo", meaning: "Desagradável, irritante" },
+                { term: "Incrível", meaning: "Extraordinário, fantástico" },
+                { term: "Indescritível", meaning: "Impossível de descrever" },
+                { term: "Indestrutível", meaning: "Impossível de destruir" },
+                { term: "Indispensável", meaning: "Essencial, necessário" },
+                { term: "Indivisível", meaning: "Impossível de dividir" },
+                { term: "Indomável", meaning: "Impossível de domar" },
+                { term: "Inequívoco", meaning: "Claro, evidente" },
+                { term: "Inexorável", meaning: "Implacável, inevitável" },
+                { term: "Inexplicável", meaning: "Impossível de explicar" },
+                { term: "Inabalável", meaning: "Firme, estável" },
+                { term: "Inacreditável", meaning: "Difícil de acreditar" },
+                { term: "Inadiável", meaning: "Urgente, prioritário" },
+                { term: "Inafastável", meaning: "Impossível de afastar" },
+                { term: "Inalienável", meaning: "Que não pode ser alienado" },
+                { term: "Inalterável", meaning: "Que não se altera" },
+                { term: "Inamovível", meaning: "Fixo, estável" },
+                { term: "Inapelável", meaning: "Definitivo, irrevogável" }
+            ],
+            "J": [
+                { term: "Já era", meaning: "Acabou, perdeu a chance" },
+                { term: "Jogar conversa fora", meaning: "Conversar sem compromisso" },
+                { term: "Já volto", meaning: "Expressão para dizer que vai retornar" },
+                { term: "Jogo rápido", meaning: "Algo feito rapidamente" },
+                { term: "Já sabe", meaning: "Expressão de confirmação" },
+                { term: "Jogo duro", meaning: "Atitude firme, difícil" },
+                { term: "Já chegou", meaning: "Expressão de chegada" },
+                { term: "Jogo limpo", meaning: "Atitude honesta" },
+                { term: "Já foi", meaning: "Expressão de passado" },
+                { term: "Jogo sujo", meaning: "Atitude desonesta" },
+                { term: "Já vai", meaning: "Expressão de partida iminente" },
+                { term: "Jogo de cintura", meaning: "Habilidade para lidar com situações" },
+                { term: "Já pode", meaning: "Expressão de permissão" },
+                { term: "Jogo político", meaning: "Manobras políticas" },
+                { term: "Já deu", meaning: "Expressão de suficiência" },
+                { term: "Jogo de interesses", meaning: "Conflito de interesses" },
+                { term: "Já passou", meaning: "Expressão de tempo decorrido" },
+                { term: "Jogo de poder", meaning: "Disputa por influência" },
+                { term: "Já acabou", meaning: "Expressão de finalização" },
+                { term: "Jogo de azar", meaning: "Jogo dependente da sorte" },
+                { term: "Já começou", meaning: "Expressão de início" },
+                { term: "Jogo de tabuleiro", meaning: "Jogo de mesa" },
+                { term: "Já terminou", meaning: "Expressão de conclusão" },
+                { term: "Jogo eletrônico", meaning: "Video game" },
+                { term: "Já está", meaning: "Expressão de prontidão" },
+                { term: "Jogo online", meaning: "Jogo pela internet" },
+                { term: "Já foi embora", meaning: "Expressão de saída" },
+                { term: "Jogo de cartas", meaning: "Jogo com baralho" },
+                { term: "Já chegou?", meaning: "Pergunta sobre chegada" },
+                { term: "Jogo de dados", meaning: "Jogo com dados" },
+                { term: "Já saiu", meaning: "Expressão de partida" },
+                { term: "Jogo de estratégia", meaning: "Jogo que exige planejamento" },
+                { term: "Já voltou", meaning: "Expressão de retorno" },
+                { term: "Jogo de RPG", meaning: "Jogo de interpretação" },
+                { term: "Já acabou?", meaning: "Pergunta sobre finalização" },
+                { term: "Jogo de futebol", meaning: "Partida de futebol" },
+                { term: "Já começou?", meaning: "Pergunta sobre início" },
+                { term: "Jogo de basquete", meaning: "Partida de basquete" },
+                { term: "Já está pronto?", meaning: "Pergunta sobre preparação" },
+                { term: "Jogo de vôlei", meaning: "Partida de vôlei" },
+                { term: "Já foi resolvido?", meaning: "Pergunta sobre solução" },
+                { term: "Jogo de tênis", meaning: "Partida de tênis" },
+                { term: "Já deu certo?", meaning: "Pergunta sobre sucesso" },
+                { term: "Jogo de handebol", meaning: "Partida de handebol" },
+                { term: "Já está feito?", meaning: "Pergunta sobre conclusão" },
+                { term: "Jogo de sinuca", meaning: "Partida de sinuca" },
+                { term: "Já está chegando?", meaning: "Pergunta sobre aproximação" },
+                { term: "Jogo de xadrez", meaning: "Partida de xadrez" }
+            ],
+            "K": [
+                { term: "Kibe", meaning: "Pessoa desajeitada, estabanada" },
+                { term: "Kitar", meaning: "Dormir, cochilar" },
+                { term: "K-pop", meaning: "Música pop coreana" },
+                { term: "K-drama", meaning: "Novela coreana" },
+                { term: "K-beauty", meaning: "Beleza coreana" },
+                { term: "K-fashion", meaning: "Moda coreana" },
+                { term: "K-culture", meaning: "Cultura coreana" },
+                { term: "K-food", meaning: "Comida coreana" },
+                { term: "K-style", meaning: "Estilo coreano" },
+                { term: "K-wave", meaning: "Onda coreana" },
+                { term: "K-idol", meaning: "Ídolo coreano" },
+                { term: "K-fan", meaning: "Fã de cultura coreana" },
+                { term: "K-lover", meaning: "Amante da cultura coreana" },
+                { term: "K-entertainment", meaning: "Entretenimento coreano" },
+                { term: "K-music", meaning: "Música coreana" },
+                { term: "K-dance", meaning: "Dança coreana" },
+                { term: "K-movie", meaning: "Filme coreano" },
+                { term: "K-series", meaning: "Série coreana" },
+                { term: "K-variety", meaning: "Programa de variedades coreano" },
+                { term: "K-reality", meaning: "Reality show coreano" },
+                { term: "K-talk", meaning: "Programa de entrevistas coreano" },
+                { term: "K-comedy", meaning: "Comédia coreana" },
+                { term: "K-documentary", meaning: "Documentário coreano" },
+                { term: "K-animation", meaning: "Animação coreana" },
+                { term: "K-game", meaning: "Jogo coreano" },
+                { term: "K-sport", meaning: "Esporte coreano" },
+                { term: "K-art", meaning: "Arte coreana" },
+                { term: "K-design", meaning: "Design coreano" },
+                { term: "K-architecture", meaning: "Arquitetura coreana" },
+                { term: "K-technology", meaning: "Tecnologia coreana" },
+                { term: "K-innovation", meaning: "Inovação coreana" },
+                { term: "K-business", meaning: "Negócios coreanos" },
+                { term: "K-economy", meaning: "Economia coreana" },
+                { term: "K-education", meaning: "Educação coreana" },
+                { term: "K-language", meaning: "Língua coreana" },
+                { term: "K-history", meaning: "História coreana" },
+                { term: "K-tradition", meaning: "Tradição coreana" },
+                { term: "K-custom", meaning: "Costume coreano" },
+                { term: "K-heritage", meaning: "Patrimônio coreano" },
+                { term: "K-spirituality", meaning: "Espiritualidade coreana" },
+                { term: "K-philosophy", meaning: "Filosofia coreana" },
+                { term: "K-medicine", meaning: "Medicina coreana" },
+                { term: "K-wellness", meaning: "Bem-estar coreano" },
+                { term: "K-beauty standard", meaning: "Padrão de beleza coreano" },
+                { term: "K-fashion trend", meaning: "Tendência da moda coreana" },
+                { term: "K-pop star", meaning: "Estrela do K-pop" },
+                { term: "K-drama actor", meaning: "Ator de drama coreano" },
+                { term: "K-culture enthusiast", meaning: "Entusiasta da cultura coreana" }
+            ],
+            "L": [
+                { term: "Legal", meaning: "Bom, agradável" },
+                { term: "Lascou", meaning: "Estragou, quebrou" },
+                { term: "Ligeiro", meaning: "Rápido, esperto" },
+                { term: "Louco", meaning: "Incrível, fantástico" },
+                { term: "Largado", meaning: "Descuidado, desleixado" },
+                { term: "Liso", meaning: "Sem dinheiro" },
+                { term: "Lascado", meaning: "Quebrado, danificado" },
+                { term: "Livre", meaning: "Solteiro, desimpedido" },
+                { term: "Lindo", meaning: "Bonito, belo" },
+                { term: "Lembrado", meaning: "Recordado, não esquecido" },
+                { term: "Limitado", meaning: "Restrito, com limitações" },
+                { term: "Lisonjeado", meaning: "Bajulado, adulado" },
+                { term: "Localizado", meaning: "Encontrado, situado" },
+                { term: "Louvado", meaning: "Elogiado, exaltado" },
+                { term: "Lubrificado", meaning: "Oleado, facilitado" },
+                { term: "Lucrado", meaning: "Ganhado, obtido lucro" },
+                { term: "Lutado", meaning: "Brigado, combatido" },
+                { term: "Lamentado", meaning: "Chorado, lastimado" },
+                { term: "Lancado", meaning: "Lançado, introduzido" },
+                { term: "Lapidado", meaning: "Aperfeiçoado, polido" },
+                { term: "Lavado", meaning: "Limpo, higienizado" },
+                { term: "Legalizado", meaning: "Tornado legal, autorizado" },
+                { term: "Legitimado", meaning: "Validado, autenticado" },
+                { term: "Lembrado", meaning: "Recordado, trazido à memória" },
+                { term: "Limitado", meaning: "Restringido, delimitado" },
+                { term: "Lisonjeado", meaning: "Bajulado, adulado" },
+                { term: "Localizado", meaning: "Posicionado, situado" },
+                { term: "Louvado", meaning: "Elogiado, glorificado" },
+                { term: "Lubrificado", meaning: "Oleado, untado" },
+                { term: "Lucrado", meaning: "Ganho, obtido proveito" },
+                { term: "Lutado", meaning: "Combativo, enfrentado" },
+                { term: "Lamentado", meaning: "Chorado, deplorado" },
+                { term: "Lancado", meaning: "Introduzido, lançado" },
+                { term: "Lapidado", meaning: "Cortado, polido" },
+                { term: "Lavado", meaning: "Limpo, purificado" },
+                { term: "Legalizado", meaning: "Regularizado, oficializado" },
+                { term: "Legitimado", meaning: "Justificado, validado" },
+                { term: "Liberado", meaning: "Soltado, permitido" },
+                { term: "Licenciado", meaning: "Autorizado, certificado" },
+                { term: "Liderado", meaning: "Conduzido, guiado" },
+                { term: "Ligado", meaning: "Conectado, unido" },
+                { term: "Limitado", meaning: "Confinado, restrito" },
+                { term: "Lisonjeado", meaning: "Elogiado, bajulado" },
+                { term: "Localizado", meaning: "Encontrado, achado" },
+                { term: "Louvado", meaning: "Exaltado, glorificado" },
+                { term: "Lubrificado", meaning: "Untado, oleado" },
+                { term: "Lucrado", meaning: "Beneficiado, ganho" }
+            ],
+            "M": [
+                { term: "Mano", meaning: "Amigo, companheiro" },
+                { term: "Mina", meaning: "Garota, mulher" },
+                { term: "Mermão", meaning: "Expressão para chamar atenção" },
+                { term: "Mó", meaning: "Muito, bastante" },
+                { term: "Massa", meaning: "Legal, bacana" },
+                { term: "Malandro", meaning: "Esperto, astuto" },
+                { term: "Migue", meaning: "Mentira, desculpa" },
+                { term: "Mizera", meaning: "Pessoa de mau caráter" },
+                { term: "Muito", meaning: "Em grande quantidade" },
+                { term: "Mais", meaning: "Adicional, extra" },
+                { term: "Melhor", meaning: "Superior, de maior qualidade" },
+                { term: "Menos", meaning: "Em menor quantidade" },
+                { term: "Mesmo", meaning: "Exatamente, realmente" },
+                { term: "Muito bem", meaning: "Excelente, ótimo" },
+                { term: "Mais ou menos", meaning: "Regular, nem bom nem ruim" },
+                { term: "Melhor possível", meaning: "O melhor que se pode ter" },
+                { term: "Menos mal", meaning: "Ainda bem, poderia ser pior" },
+                { term: "Mesmo assim", meaning: "Apesar disso, mesmo" },
+                { term: "Muito obrigado", meaning: "Agradecimento intenso" },
+                { term: "Mais cedo", meaning: "Antes do esperado" },
+                { term: "Melhor que nada", meaning: "Prefirível a nada" },
+                { term: "Menos que isso", meaning: "Em quantidade inferior" },
+                { term: "Mesmo tempo", meaning: "Simultaneamente" },
+                { term: "Muito tempo", meaning: "Longo período" },
+                { term: "Mais tarde", meaning: "Posteriormente" },
+                { term: "Melhor amigo", meaning: "Amigo mais próximo" },
+                { term: "Menos importante", meaning: "De menor relevância" },
+                { term: "Mesmo lugar", meaning: "No mesmo local" },
+                { term: "Muito dinheiro", meaning: "Grande quantia" },
+                { term: "Mais uma vez", meaning: "Repetidamente" },
+                { term: "Melhor opção", meaning: "Alternativa superior" },
+                { term: "Menos frequente", meaning: "Mais raro" },
+                { term: "Mesmo caso", meaning: "Situação idêntica" },
+                { term: "Muito trabalho", meaning: "Grande quantidade de tarefas" },
+                { term: "Mais rápido", meaning: "Com maior velocidade" },
+                { term: "Melhor resultado", meaning: "Desfecho superior" },
+                { term: "Menos complicado", meaning: "Mais simples" },
+                { term: "Mesmo problema", meaning: "Questão idêntica" },
+                { term: "Muito esforço", meaning: "Grande dedicação" },
+                { term: "Mais fácil", meaning: "De maior facilidade" },
+                { term: "Melhor qualidade", meaning: "Superioridade qualitativa" },
+                { term: "Menos tempo", meaning: "Período reduzido" },
+                { term: "Mesmo jeito", meaning: "Da mesma maneira" },
+                { term: "Muito cuidado", meaning: "Grande atenção" },
+                { term: "Mais perto", meaning: "Mais próximo" },
+                { term: "Melhor momento", meaning: "Oportunidade ideal" },
+                { term: "Menos espaço", meaning: "Área reduzida" }
+            ],
+            "N": [
+                { term: "Nóia", meaning: "Preocupação, paranóia" },
+                { term: "Na moral", meaning: "Sério, verdadeiro" },
+                { term: "Né", meaning: "Não é? (partícula interrogativa)" },
+                { term: "Nada a ver", meaning: "Sem sentido, incoerente" },
+                { term: "Na paz", meaning: "Tranquilo, em paz" },
+                { term: "Nervoso", meaning: "Irritado, agitado" },
+                { term: "Na boa", meaning: "Sem problemas, tranquilo" },
+                { term: "Nítido", meaning: "Claro, evidente" },
+                { term: "Na hora", meaning: "Imediatamente" },
+                { term: "Nacional", meaning: "Do país, doméstico" },
+                { term: "Natural", meaning: "Espontâneo, não artificial" },
+                { term: "Necessário", meaning: "Imprescindível, essencial" },
+                { term: "Negativo", meaning: "Desfavorável, contrário" },
+                { term: "Nervoso", meaning: "Ansioso, agitado" },
+                { term: "Nobre", meaning: "Distinto, honrado" },
+                { term: "Normal", meaning: "Comum, habitual" },
+                { term: "Notável", meaning: "Destacado, importante" },
+                { term: "Novo", meaning: "Recente, moderno" },
+                { term: "Nulo", meaning: "Sem valor, inválido" },
+                { term: "Numérico", meaning: "Relativo a números" },
+                { term: "Nutritivo", meaning: "Alimentício, saudável" },
+                { term: "Nacionalizado", meaning: "Tornado nacional" },
+                { term: "Naturalizado", meaning: "Adaptado, acostumado" },
+                { term: "Necessitado", meaning: "Carente, precisado" },
+                { term: "Negligenciado", meaning: "Descuidado, abandonado" },
+                { term: "Nervosismo", meaning: "Agitação, ansiedade" },
+                { term: "Nobilitado", meaning: "Enobrecido, honrado" },
+                { term: "Normalizado", meaning: "Padronizado, regularizado" },
+                { term: "Notificado", meaning: "Comunicado, avisado" },
+                { term: "Novidade", meaning: "Algo novo, inovação" },
+                { term: "Nulificado", meaning: "Anulado, invalidado" },
+                { term: "Numerado", meaning: "Contado, enumerado" },
+                { term: "Nutrido", meaning: "Alimentado, sustentado" },
+                { term: "Nacionalismo", meaning: "Amor à pátria" },
+                { term: "Naturalidade", meaning: "Espontaneidade" },
+                { term: "Necessidade", meaning: "Carência, precisão" },
+                { term: "Negação", meaning: "Recusa, oposição" },
+                { term: "Nervosidade", meaning: "Estado de agitação" },
+                { term: "Nobreza", meaning: "Qualidade de nobre" },
+                { term: "Normalidade", meaning: "Estado normal" },
+                { term: "Notoriedade", meaning: "Fama, reconhecimento" },
+                { term: "Novidade", meaning: "Caráter de novo" },
+                { term: "Nulidade", meaning: "Qualidade de nulo" },
+                { term: "Numerosidade", meaning: "Grande quantidade" },
+                { term: "Nutrição", meaning: "Alimentação, sustento" },
+                { term: "Nacionalista", meaning: "Patriótico" },
+                { term: "Naturalista", meaning: "Que segue a natureza" },
+                { term: "Necessitante", meaning: "Que necessita" }
+            ],
+            "O": [
+                { term: "Obra", meaning: "Trabalho, projeto" },
+                { term: "Ocasião", meaning: "Oportunidade, chance" },
+                { term: "Oculto", meaning: "Escondido, secreto" },
+                { term: "Ocupado", meaning: "Atarefado, busy" },
+                { term: "Odioso", meaning: "Que causa ódio" },
+                { term: "Ofensivo", meaning: "Agressivo, insultuoso" },
+                { term: "Oficial", meaning: "Autorizado, formal" },
+                { term: "Oportuno", meaning: "Adequado, conveniente" },
+                { term: "Oposto", meaning: "Contrário, antagônico" },
+                { term: "Oracional", meaning: "Relativo à oração" },
+                { term: "Ordinário", meaning: "Comum, vulgar" },
+                { term: "Organizado", meaning: "Arrrumado, sistemático" },
+                { term: "Original", meaning: "Genuíno, autêntico" },
+                { term: "Ornamental", meaning: "Decorativo, enfeitado" },
+                { term: "Oscilante", meaning: "Flutuante, variável" },
+                { term: "Ostensivo", meaning: "Evidente, manifestado" },
+                { term: "Otimista", meaning: "Positivo, esperançoso" },
+                { term: "Ousado", meaning: "Audacioso, corajoso" },
+                { term: "Oval", meaning: "Arredondado, elíptico" },
+                { term: "Obediente", meaning: "Dócil, submisso" },
+                { term: "Objetivo", meaning: "Meta, propósito" },
+                { term: "Obrigatório", meaning: "Compulsório, forçoso" },
+                { term: "Observador", meaning: "Atento, perceptivo" },
+                { term: "Obstinado", meaning: "Teimoso, persistente" },
+                { term: "Obtuso", meaning: "Limitado, pouco inteligente" },
+                { term: "Ocasional", meaning: "Eventual, esporádico" },
+                { term: "Ocioso", meaning: "Desocupado, inativo" },
+                { term: "Ocultado", meaning: "Escondido, camuflado" },
+                { term: "Odientado", meaning: "Cheio de ódio" },
+                { term: "Ofendido", meaning: "Agresso, insultado" },
+                { term: "Oficializado", meaning: "Formalizado, autorizado" },
+                { term: "Oportunizado", meaning: "Tornado oportuno" },
+                { term: "Oposicionista", meaning: "Que faz oposição" },
+                { term: "Oracionado", meaning: "Que fez oração" },
+                { term: "Ordinariado", meaning: "Tornado comum" },
+                { term: "Organizacional", meaning: "Relativo à organização" },
+                { term: "Originado", meaning: "Provindo, surgido" },
+                { term: "Ornamentado", meaning: "Decorado, enfeitado" },
+                { term: "Oscilado", meaning: "Balançado, fluctuado" },
+                { term: "Ostentado", meaning: "Exibido, mostrado" },
+                { term: "Otimizado", meaning: "Melhorado, aperfeiçoado" },
+                { term: "Ousadia", meaning: "Audácia, coragem" },
+                { term: "Ovalado", meaning: "Arredondado" },
+                { term: "Obedecido", meaning: "Cumprido, seguido" },
+                { term: "Objetivado", meaning: "Focado, direcionado" },
+                { term: "Obrigado", meaning: "Agradecido, grato" },
+                { term: "Observado", meaning: "Notado, percebido" }
+            ],
+            "P": [
+                { term: "Papo", meaning: "Conversa, diálogo" },
+                { term: "Pivot", meaning: "Pessoa central, referência" },
+                { term: "Pagar o pato", meaning: "Arcar com as consequências" },
+                { term: "Pé na cova", meaning: "Situação ruim, perigosa" },
+                { term: "Pitaco", meaning: "Opinião não solicitada" },
+                { term: "Pagar mico", meaning: "Passar vergonha" },
+                { term: "Pé rapado", meaning: "Pessoa sem dinheiro" },
+                { term: "Pão duro", meaning: "Pessoa avarenta, mão de vaca" },
+                { term: "Pacote", meaning: "Conjunto, grupo" },
+                { term: "Padrão", meaning: "Modelo, referência" },
+                { term: "Pago", meaning: "Remunerado, compensado" },
+                { term: "Parado", meaning: "Imóvel, estagnado" },
+                { term: "Parcial", meaning: "Incompleto, partidário" },
+                { term: "Pardo", meaning: "Moreno, mestiço" },
+                { term: "Parco", meaning: "Escasso, limitado" },
+                { term: "Pardo", meaning: "De cor intermediária" },
+                { term: "Parecido", meaning: "Similar, semelhante" },
+                { term: "Parido", meaning: "Gerado, nascido" },
+                { term: "Parvo", meaning: "Tolo, simplório" },
+                { term: "Passado", meaning: "Anterior, ultrapassado" },
+                { term: "Passivo", meaning: "Inativo, receptivo" },
+                { term: "Pasto", meaning: "Alimentado, nutrido" },
+                { term: "Patente", meaning: "Evidente, claro" },
+                { term: "Paterno", meaning: "Paternal, protetor" },
+                { term: "Pático", meaning: "Emocional, sentimental" },
+                { term: "Pavio", meaning: "Pavio, mecha" },
+                { term: "Peculiar", meaning: "Característico, próprio" },
+                { term: "Pedaço", meaning: "Fragmento, parte" },
+                { term: "Pedante", meaning: "Presunçoso, afetado" },
+                { term: "Pego", meaning: "Apanhado, capturado" },
+                { term: "Peitudo", meaning: "Com seios grandes" },
+                { term: "Pelado", meaning: "Nu, desnudo" },
+                { term: "Pendurado", meaning: "Suspenso, dependurado" },
+                { term: "Pensado", meaning: "Considerado, refletido" },
+                { term: "Pequeno", meaning: "De tamanho reduzido" },
+                { term: "Perdido", meaning: "Desorientado, extraviado" },
+                { term: "Pereba", meaning: "Ferimento, machucado" },
+                { term: "Perfeito", meaning: "Ideal, completo" },
+                { term: "Pernóstico", meaning: "Afetado, pretensioso" },
+                { term: "Perspicaz", meaning: "Aguçado, penetrante" },
+                { term: "Pertinente", meaning: "Adequado, relevante" },
+                { term: "Perverso", meaning: "Mau, cruel" },
+                { term: "Pesado", meaning: "De grande peso, difícil" },
+                { term: "Pessoal", meaning: "Individual, particular" },
+                { term: "Petulante", meaning: "Arrogante, insolente" },
+                { term: "Pirado", meaning: "Louco, maluco" },
+                { term: "Plano", meaning: "Nivelado, liso" }
+            ],
+            "Q": [
+                { term: "Quebrada", meaning: "Periferia, comunidade" },
+                { term: "Quente", meaning: "Atraente, sensual" },
+                { term: "Qualidade", meaning: "Característica, atributo" },
+                { term: "Quantidade", meaning: "Número, montante" },
+                { term: "Quarentena", meaning: "Isolamento, separação" },
+                { term: "Quase", meaning: "Próximo, por pouco" },
+                { term: "Quatro", meaning: "Número quatro" },
+                { term: "Quebrado", meaning: "Sem dinheiro, falido" },
+                { term: "Queijo", meaning: "Dinheiro, grana" },
+                { term: "Queima", meaning: "Promoção, liquidação" },
+                { term: "Queixa", meaning: "Reclamação, lamento" },
+                { term: "Quente", meaning: "Com temperatura elevada" },
+                { term: "Questão", meaning: "Pergunta, problema" },
+                { term: "Quick", meaning: "Rápido, veloz" },
+                { term: "Quieto", meaning: "Calado, silencioso" },
+                { term: "Quilo", meaning: "Kilograma" },
+                { term: "Quimera", meaning: "Ilusão, fantasia" },
+                { term: "Quintal", meaning: "Área externa da casa" },
+                { term: "Quinto", meaning: "Uma parte de cinco" },
+                { term: "Quórum", meaning: "Número mínimo necessário" },
+                { term: "Qualificado", meaning: "Habilitado, capacitado" },
+                { term: "Quantificado", meaning: "Medido, calculado" },
+                { term: "Quarentenado", meaning: "Em isolamento" },
+                { term: "Quase lá", meaning: "Perto de conseguir" },
+                { term: "Quatro vezes", meaning: "Multiplicado por quatro" },
+                { term: "Quebradiço", meaning: "Frágil, que quebra fácil" },
+                { term: "Queijoso", meaning: "Com muito queijo" },
+                { term: "Queimado", meaning: "Carbonizado, ardido" },
+                { term: "Queixoso", meaning: "Que se queixa" },
+                { term: "Quentinho", meaning: "Agradavelmente quente" },
+                { term: "Questionado", meaning: "Perguntado, duvidado" },
+                { term: "Quickly", meaning: "Rapidamente" },
+                { term: "Quietinho", meaning: "Bem calado" },
+                { term: "Quilométrico", meaning: "Muito longo" },
+                { term: "Quimérico", meaning: "Ilusório, fantasioso" },
+                { term: "Quintalizado", meaning: "Com quintal" },
+                { term: "Quintuplicado", meaning: "Multiplicado por cinco" },
+                { term: "Quoruminado", meaning: "Com quórum formado" },
+                { term: "Qualificativo", meaning: "Que qualifica" },
+                { term: "Quantitativo", meaning: "Relativo à quantidade" },
+                { term: "Quarentenário", meaning: "Relativo à quarentena" },
+                { term: "Quase sempre", meaning: "Na maioria das vezes" },
+                { term: "Quadruplicado", meaning: "Multiplicado por quatro" },
+                { term: "Quebra-cabeça", meaning: "Desafio, problema" },
+                { term: "Queijo quente", meaning: "Situação confortável" },
+                { term: "Queima total", meaning: "Liquidação completa" },
+                { term: "Queixa-crime", meaning: "Denúncia formal" }
+            ],
+            "R": [
+                { term: "Rapaziada", meaning: "Galera, turma" },
+                { term: "Rolê", meaning: "Passeio, programa" },
+                { term: "Rala", meaning: "Sai, vai embora" },
+                { term: "Rachado", meaning: "Muito cansado" },
+                { term: "Retado", meaning: "Louco, doido" },
+                { term: "Rap", meaning: "Estilo musical" },
+                { term: "Rango", meaning: "Comida, refeição" },
+                { term: "Rebaixado", meaning: "Humilhado, rebaixado" },
+                { term: "Rei", meaning: "O melhor, excelente" },
+                { term: "Rola", meaning: "Acontece, rola" },
+                { term: "Rapidez", meaning: "Velocidade, agilidade" },
+                { term: "Raridade", meaning: "Algo raro, incomum" },
+                { term: "Raso", meaning: "Pouco profundo" },
+                { term: "Rasteiro", meaning: "Baixo, próximo ao chão" },
+                { term: "Razoável", meaning: "Aceitável, decente" },
+                { term: "Real", meaning: "Verdadeiro, autêntico" },
+                { term: "Recente", meaning: "Novo, atual" },
+                { term: "Receptivo", meaning: "Aberto, acolhedor" },
+                { term: "Recíproco", meaning: "Mútuo, bilateral" },
+                { term: "Recluso", meaning: "Isolado, afastado" },
+                { term: "Reconhecido", meaning: "Identificado, admitido" },
+                { term: "Recorrente", meaning: "Frequente, repetitivo" },
+                { term: "Recrutado", meaning: "Alistado, contratado" },
+                { term: "Redondo", meaning: "Circular, esférico" },
+                { term: "Reduzido", meaning: "Diminuído, limitado" },
+                { term: "Refeito", meaning: "Refeito, refeito" },
+                { term: "Refinado", meaning: "Elegante, sofisticado" },
+                { term: "Refletido", meaning: "Pensado, considerado" },
+                { term: "Reformado", meaning: "Renovado, remodelado" },
+                { term: "Refugiado", meaning: "Asilado, exilado" },
+                { term: "Regulado", meaning: "Ajustado, controlado" },
+                { term: "Rei", meaning: "Monarca, soberano" },
+                { term: "Reincidente", meaning: "Que repete o erro" },
+                { term: "Rejeitado", meaning: "Recusado, descartado" },
+                { term: "Relativo", meaning: "Comparativo, dependente" },
+                { term: "Relaxado", meaning: "Descontraído, calmo" },
+                { term: "Relevante", meaning: "Importante, significativo" },
+                { term: "Relutante", meaning: "Resistente, hesitante" },
+                { term: "Remoto", meaning: "Distante, afastado" },
+                { term: "Rendido", meaning: "Cansado, exausto" },
+                { term: "Renomado", meaning: "Famoso, conceituado" },
+                { term: "Reparado", meaning: "Consertado, arrumado" },
+                { term: "Repetido", meaning: "Feito novamente" },
+                { term: "Repleto", meaning: "Cheio, lotado" },
+                { term: "Repousado", meaning: "Descansado, tranquilo" },
+                { term: "Reprimido", meaning: "Contido, controlado" },
+                { term: "Reservado", meaning: "Discreto, cauteloso" }
+            ],
+            "S": [
+                { term: "Sangue bom", meaning: "Pessoa legal, agradável" },
+                { term: "Suave", meaning: "Tranquilo, fácil" },
+                { term: "Surtar", meaning: "Pirar, enlouquecer" },
+                { term: "Sacada", meaning: "Ideia inteligente, percepção" },
+                { term: "Sussa", meaning: "Calmo, tranquilo" },
+                { term: "Shoow", meaning: "Legal, bacana" },
+                { term: "Sacudo", meaning: "Intenso, forte" },
+                { term: "Sagaz", meaning: "Esperto, inteligente" },
+                { term: "Salvo", meaning: "Protegido, seguro" },
+                { term: "Santo", meaning: "Puro, virtuoso" },
+                { term: "Saudável", meaning: "São, salubre" },
+                { term: "Seco", meaning: "Árido, sem umidade" },
+                { term: "Seguro", meaning: "Protegido, garantido" },
+                { term: "Seletivo", meaning: "Discriminatório, escolhido" },
+                { term: "Semelhante", meaning: "Parecido, similar" },
+                { term: "Sensato", meaning: "Prudente, razoável" },
+                { term: "Sensível", meaning: "Emotivo, delicado" },
+                { term: "Sereno", meaning: "Calmo, tranquilo" },
+                { term: "Sério", meaning: "Formal, verdadeiro" },
+                { term: "Servil", meaning: "Submisso, obediente" },
+                { term: "Severo", meaning: "Rígido, austero" },
+                { term: "Sexy", meaning: "Sensual, atraente" },
+                { term: "Simples", meaning: "Fácil, descomplicado" },
+                { term: "Sincero", meaning: "Franco, honesto" },
+                { term: "Soberano", meaning: "Supremo, absoluto" },
+                { term: "Sóbrio", meaning: "Contido, moderado" },
+                { term: "Social", meaning: "Coletivo, comunitário" },
+                { term: "Sofisticado", meaning: "Elegante, refinado" },
+                { term: "Solene", meaning: "Solenne, cerimonioso" },
+                { term: "Solidário", meaning: "Apoiador, cooperativo" },
+                { term: "Solitário", meaning: "Sozinho, isolado" },
+                { term: "Som", meaning: "Som, ruído" },
+                { term: "Sorridente", meaning: "Alegre, feliz" },
+                { term: "Sossegado", meaning: "Calmo, tranquilo" },
+                { term: "Soturno", meaning: "Triste, melancólico" },
+                { term: "Submisso", meaning: "Obediente, subordinado" },
+                { term: "Substituto", meaning: "Alternativo, reserva" },
+                { term: "Suficiente", meaning: "Bastante, adequado" },
+                { term: "Super", meaning: "Excelente, ótimo" },
+                { term: "Suposto", meaning: "Presumido, alegado" },
+                { term: "Surdo", meaning: "Que não ouve" },
+                { term: "Sutil", meaning: "Discreto, delicado" },
+                { term: "Sábio", meaning: "Sábio, inteligente" },
+                { term: "Sádico", meaning: "Que sente prazer com dor" },
+                { term: "Sã", meaning: "Sã, saudável" },
+                { term: "Século", meaning: "Século, cem anos" },
+                { term: "Símbolo", meaning: "Símbolo, representação" }
+            ],
+            "T": [
+                { term: "Tá ligado?", meaning: "Está entendendo?" },
+                { term: "Treta", meaning: "Confusão, briga" },
+                { term: "Trampo", meaning: "Trabalho, emprego" },
+                { term: "Top", meaning: "Legal, bacana" },
+                { term: "Tirar onda", meaning: "Se exibir, bancar o engraçado" },
+                { term: "Tacanho", meaning: "Mesquinho, limitado" },
+                { term: "Talentoso", meaning: "Dotado, habilidoso" },
+                { term: "Tamanho", meaning: "Dimensão, grandeza" },
+                { term: "Tardio", meaning: "Atrasado, demorado" },
+                { term: "Tátil", meaning: "Relativo ao tato" },
+                { term: "Teimoso", meaning: "Obstinado, persistente" },
+                { term: "Temperamental", meaning: "Instável, volúvel" },
+                { term: "Temporário", meaning: "Provisório, passageiro" },
+                { term: "Tenaz", meaning: "Persistente, firme" },
+                { term: "Tenso", meaning: "Nervoso, ansioso" },
+                { term: "Tépido", meaning: "Morno, pouco quente" },
+                { term: "Ternário", meaning: "Triplo, triádico" },
+                { term: "Terra", meaning: "Solo, planeta" },
+                { term: "Terrível", meaning: "Péssimo, horrível" },
+                { term: "Teso", meaning: "Duro, rígido" },
+                { term: "Testado", meaning: "Experimentado, provado" },
+                { term: "Teto", meaning: "Limite, máximo" },
+                { term: "Textual", meaning: "Literal, exato" },
+                { term: "Tímido", meaning: "Acanhado, reservado" },
+                { term: "Tinto", meaning: "Corado, vermelho" },
+                { term: "Tipo", meaning: "Como, assim" },
+                { term: "Típico", meaning: "Característico, usual" },
+                { term: "Titânico", meaning: "Gigantesco, enorme" },
+                { term: "Tocado", meaning: "Emocionado, comovido" },
+                { term: "Tolerante", meaning: "Compreensivo, paciente" },
+                { term: "Tom", meaning: "Tom, tonalidade" },
+                { term: "Top", meaning: "Melhor, excelente" },
+                { term: "Torpe", meaning: "Vil, desprezível" },
+                { term: "Tosco", meaning: "Grosseiro, rude" },
+                { term: "Tóxico", meaning: "Venenoso, prejudicial" },
+                { term: "Trabalhado", meaning: "Elaborado, desenvolvido" },
+                { term: "Tradicional", meaning: "Convencional, clássico" },
+                { term: "Tranquilo", meaning: "Calmo, sossegado" },
+                { term: "Traseiro", meaning: "Posterior, trás" },
+                { term: "Tratado", meaning: "Acordado, combinado" },
+                { term: "Treinado", meaning: "Preparado, exercitado" },
+                { term: "Trem", meaning: "Coisa, bagulho" },
+                { term: "Triste", meaning: "Melancólico, infeliz" },
+                { term: "Trivial", meaning: "Banal, comum" },
+                { term: "Tropical", meaning: "Relativo aos trópicos" },
+                { term: "Turbulento", meaning: "Agitado, conturbado" },
+                { term: "Turvo", meaning: "Nublado, obscuro" }
+            ],
+            "U": [
+                { term: "Uai", meaning: "Expressão de espanto (regional)" },
+                { term: "Uó", meaning: "Expressão de nojo" },
+                { term: "Ubíquo", meaning: "Onipresente, em todo lugar" },
+                { term: "Úmido", meaning: "Molhado, humedecido" },
+                { term: "Unânime", meaning: "Consensual, geral" },
+                { term: "Único", meaning: "Exclusivo, singular" },
+                { term: "Unilateral", meaning: "De um lado só" },
+                { term: "Universal", meaning: "Mundial, global" },
+                { term: "Urbano", meaning: "Da cidade, urbanizado" },
+                { term: "Urgente", meaning: "Imediato, prioritário" },
+                { term: "Útil", meaning: "Prático, proveitoso" },
+                { term: "Utópico", meaning: "Idealista, irreal" },
+                { term: "Ufanista", meaning: "Patriótico, nacionalista" },
+                { term: "Ululante", meaning: "Gritante, evidente" },
+                { term: "Ultrajante", meaning: "Ofensivo, insultuoso" },
+                { term: "Um", meaning: "Número um" },
+                { term: "Umedecido", meaning: "Molhado, humedecido" },
+                { term: "Unificado", meaning: "Unido, integrado" },
+                { term: "Uniforme", meaning: "Padronizado, igual" },
+                { term: "Unissex", meaning: "Para ambos os sexos" },
+                { term: "Unívoco", meaning: "Claro, inequívoco" },
+                { term: "Urdido", meaning: "Tramado, planejado" },
+                { term: "Urgido", meaning: "Pressionado, forçado" },
+                { term: "Ursinho", meaning: "Pequeno urso" },
+                { term: "Usado", meaning: "Utilizado, second-hand" },
+                { term: "Usual", meaning: "Habitual, comum" },
+                { term: "Usufruído", meaning: "Aproveitado, desfrutado" },
+                { term: "Utensílio", meaning: "Ferramenta, instrumento" },
+                { term: "Utilizado", meaning: "Usado, empregado" },
+                { term: "Utópico", meaning: "Idealista, quimérico" },
+                { term: "Uivante", meaning: "Gritante, alto" },
+                { term: "Ulterior", meaning: "Posterior, futuro" },
+                { term: "Ultimato", meaning: "Exigência final" },
+                { term: "Ultrajado", meaning: "Ofendido, insultado" },
+                { term: "Umbigo", meaning: "Centro, ponto central" },
+                { term: "Umidificado", meaning: "Umidecido" },
+                { term: "Unânime", meaning: "De comum acordo" },
+                { term: "Unificado", meaning: "Integrado, unido" },
+                { term: "Unilateral", meaning: "De um só lado" },
+                { term: "Universalizado", meaning: "Tornado universal" },
+                { term: "Urbanizado", meaning: "Civilizado, desenvolvido" },
+                { term: "Urgentíssimo", meaning: "Muito urgente" },
+                { term: "Usabilidade", meaning: "Facilidade de uso" },
+                { term: "Usufruto", meaning: "Gozo, aproveitamento" },
+                { term: "Utilidade", meaning: "Proveito, serventia" },
+                { term: "Utopia", meaning: "Sonho, ideal" }
+            ],
+            "V": [
+                { term: "Véi", meaning: "Mano, cara (abreviação de velho)" },
+                { term: "Vapt vupt", meaning: "Rapidamente, logo" },
+                { term: "Vai dar bom", meaning: "Vai dar certo" },
+                { term: "Vaza", meaning: "Sai, vai embora" },
+                { term: "Válido", meaning: "Válido, legítimo" },
+                { term: "Valioso", meaning: "Preciso, importante" },
+                { term: "Variado", meaning: "Diversificado, misto" },
+                { term: "Vasto", meaning: "Amplo, extenso" },
+                { term: "Vazio", meaning: "Oco, desocupado" },
+                { term: "Vegetativo", meaning: "Inativo, passivo" },
+                { term: "Veemente", meaning: "Enérgico, vigoroso" },
+                { term: "Velado", meaning: "Discreto, oculto" },
+                { term: "Veloz", meaning: "Rápido, ligeiro" },
+                { term: "Vendido", meaning: "Traído, corrompido" },
+                { term: "Venerado", meaning: "Respeitado, honrado" },
+                { term: "Venoso", meaning: "Relativo a veias" },
+                { term: "Ventoso", meaning: "Com vento, airado" },
+                { term: "Veraz", meaning: "Verdadeiro, sincero" },
+                { term: "Verde", meaning: "Inexperiente, novo" },
+                { term: "Verdadeiro", meaning: "Real, autêntico" },
+                { term: "Versátil", meaning: "Adaptável, flexível" },
+                { term: "Vertical", meaning: "Em pé, ereto" },
+                { term: "Veterano", meaning: "Experiente, antigo" },
+                { term: "Vez", meaning: "Oportunidade, chance" },
+                { term: "Viável", meaning: "Possível, realizável" },
+                { term: "Viciado", meaning: "Dependente, viciado" },
+                { term: "Vigente", meaning: "Atual, em vigor" },
+                { term: "Vigoroso", meaning: "Forte, robusto" },
+                { term: "Vil", meaning: "Mau, desprezível" },
+                { term: "Vingativo", meaning: "Ressentido, rancoroso" },
+                { term: "Violento", meaning: "Agressivo, bruto" },
+                { term: "Virgem", meaning: "Puro, intocado" },
+                { term: "Viril", meaning: "Masculino, forte" },
+                { term: "Virtuoso", meaning: "Bondoso, ético" },
+                { term: "Visível", meaning: "Perceptível, aparente" },
+                { term: "Vital", meaning: "Essencial, fundamental" },
+                { term: "Vitórioso", meaning: "Vencedor, triunfante" },
+                { term: "Vivo", meaning: "Ativo, alerta" },
+                { term: "Vocálico", meaning: "Relativo a vogais" },
+                { term: "Volátil", meaning: "Instável, cambiante" },
+                { term: "Voluntário", meaning: "Espontâneo, optativo" },
+                { term: "Voraz", meaning: "Insaciável, devorador" },
+                { term: "Vulgar", meaning: "Comum, ordinário" },
+                { term: "Vulnerável", meaning: "Frágil, sensível" },
+                { term: "Vultoso", meaning: "Grande, considerável" },
+                { term: "Vazio", meaning: "Sem conteúdo" }
+            ],
+            "W": [
+                { term: "Web", meaning: "Internet, rede" },
+                { term: "Whats", meaning: "WhatsApp" },
+                { term: "Wi-fi", meaning: "Conexão sem fio" },
+                { term: "Windows", meaning: "Sistema operacional" },
+                { term: "Website", meaning: "Site, página web" },
+                { term: "Webcam", meaning: "Câmera para internet" },
+                { term: "Webdesign", meaning: "Design para web" },
+                { term: "Webdeveloper", meaning: "Desenvolvedor web" },
+                { term: "Webinar", meaning: "Seminário online" },
+                { term: "Webmail", meaning: "Email via web" },
+                { term: "Webmaster", meaning: "Administrador de site" },
+                { term: "Webpage", meaning: "Página web" },
+                { term: "Webservice", meaning: "Serviço web" },
+                { term: "Webshop", meaning: "Loja online" },
+                { term: "Websurfing", meaning: "Navegação web" },
+                { term: "Webtool", meaning: "Ferramenta web" },
+                { term: "Webtv", meaning: "TV via internet" },
+                { term: "Webuser", meaning: "Usuário web" },
+                { term: "Webwriting", meaning: "Escrita para web" },
+                { term: "Whatsapp", meaning: "Aplicativo de mensagens" },
+                { term: "Wi-fi", meaning: "Rede sem fio" },
+                { term: "Wiki", meaning: "Site colaborativo" },
+                { term: "Wireless", meaning: "Sem fio" },
+                { term: "Work", meaning: "Trabalho" },
+                { term: "Workaholic", meaning: "Viciado em trabalho" },
+                { term: "Workflow", meaning: "Fluxo de trabalho" },
+                { term: "Workload", meaning: "Carga de trabalho" },
+                { term: "Workplace", meaning: "Local de trabalho" },
+                { term: "Workshop", meaning: "Oficina, treinamento" },
+                { term: "World", meaning: "Mundo" },
+                { term: "Worldwide", meaning: "Mundial" },
+                { term: "Worm", meaning: "Vírus de computador" },
+                { term: "Wow", meaning: "Expressão de surpresa" },
+                { term: "Writer", meaning: "Escritor" },
+                { term: "Writing", meaning: "Escrita" },
+                { term: "Wrong", meaning: "Errado" },
+                { term: "Webbased", meaning: "Baseado na web" },
+                { term: "Webcentric", meaning: "Centrado na web" },
+                { term: "Webenabled", meaning: "Habilitado para web" },
+                { term: "Webfriendly", meaning: "Amigável para web" },
+                { term: "Weboriented", meaning: "Orientado para web" },
+                { term: "Webready", meaning: "Pronto para web" },
+                { term: "Websavvy", meaning: "Experiente na web" },
+                { term: "Webscale", meaning: "Escala web" },
+                { term: "Websized", meaning: "Tamanho web" },
+                { term: "Webstyle", meaning: "Estilo web" },
+                { term: "Webwise", meaning: "Sábio na web" }
+            ],
+            "X": [
+                { term: "Xará", meaning: "Pessoa com o mesmo nome" },
+                { term: "Xaveco", meaning: "Conversa de paquera" },
+                { term: "Xodó", meaning: "Pessoa querida, amada" },
+                { term: "Xenófobo", meaning: "Que tem aversão a estrangeiros" },
+                { term: "Xerox", meaning: "Cópia, fotocópia" },
+                { term: "Xibiu", meaning: "Confusão, bagunça" },
+                { term: "Xingamento", meaning: "Insulto, ofensa" },
+                { term: "Xodó", meaning: "Amor, carinho" },
+                { term: "Xucro", meaning: "Brusco, grosseiro" },
+                { term: "Xavecar", meaning: "Paquerar, flertar" },
+                { term: "Xeretar", meaning: "Fuxicar, investigar" },
+                { term: "Xingar", meaning: "Insultar, ofender" },
+                { term: "Xodó", meaning: "Queridinho, preferido" },
+                { term: "Xará", meaning: "Homônimo, tocayo" },
+                { term: "Xenofobia", meaning: "Aversão a estrangeiros" },
+                { term: "Xerografia", meaning: "Técnica de cópia" },
+                { term: "Xibiu", meaning: "Desordem, confusão" },
+                { term: "Xingado", meaning: "Insultado, ofendido" },
+                { term: "Xodozar", meaning: "Mimar, tratar com carinho" },
+                { term: "Xucro", meaning: "Indomado, selvagem" },
+                { term: "Xaveco", meaning: "Conversa de conquista" },
+                { term: "Xeretada", meaning: "Investigação, fuxico" },
+                { term: "Xingação", meaning: "Ato de xingar" },
+                { term: "Xodó", meaning: "Amado, estimado" },
+                { term: "Xará", meaning: "Pessoa com mesmo nome" },
+                { term: "Xenófilo", meaning: "Que gosta de estrangeiros" },
+                { term: "Xerográfico", meaning: "Relativo a xerox" },
+                { term: "Xibiu", meaning: "Bagunça, desorganização" },
+                { term: "Xingativo", meaning: "Que xinga muito" },
+                { term: "Xodó", meaning: "Objeto de carinho" },
+                { term: "Xucrão", meaning: "Muito xucro" },
+                { term: "Xavecão", meaning: "Paquera intensa" },
+                { term: "Xeretão", meaning: "Grande fuxiqueiro" },
+                { term: "Xingão", meaning: "Que xinga bastante" },
+                { term: "Xodó", meaning: "Grande amor" },
+                { term: "Xará", meaning: "Colega de nome" },
+                { term: "Xenófobo", meaning: "Preconceituoso com estrangeiros" },
+                { term: "Xeroxar", meaning: "Fazer cópia xerox" },
+                { term: "Xibiu", meaning: "Grande confusão" },
+                { term: "Xingador", meaning: "Pessoa que xinga" },
+                { term: "Xodó", meaning: "Amorzinho" },
+                { term: "Xucrão", meaning: "Pessoa muito xucra" },
+                { term: "Xavecador", meaning: "Pessoa que xaveca" },
+                { term: "Xeretador", meaning: "Pessoa que xereta" },
+                { term: "Xingamento", meaning: "Palavrão, insulto" },
+                { term: "Xodó", meaning: "Querido, amado" }
+            ],
+            "Y": [
+                { term: "Yin-yang", meaning: "Dualidade, equilíbrio" },
+                { term: "Yoga", meaning: "Prática meditativa" },
+                { term: "Youtuber", meaning: "Criador de conteúdo no YouTube" },
+                { term: "Yes", meaning: "Sim" },
+                { term: "Yesterday", meaning: "Ontem" },
+                { term: "Yield", meaning: "Rendimento, produção" },
+                { term: "Yummy", meaning: "Gostoso, saboroso" },
+                { term: "Young", meaning: "Jovem" },
+                { term: "Your", meaning: "Seu, sua" },
+                { term: "Youth", meaning: "Juventude" },
+                { term: "YouTube", meaning: "Plataforma de vídeos" },
+                { term: "Yahoo", meaning: "Empresa de internet" },
+                { term: "Yankee", meaning: "Americano, estadunidense" },
+                { term: "Yard", meaning: "Quintal, jardim" },
+                { term: "Year", meaning: "Ano" },
+                { term: "Yellow", meaning: "Amarelo" },
+                { term: "Yes-man", meaning: "Puxa-saco, bajulador" },
+                { term: "Yielding", meaning: "Flexível, cedendo" },
+                { term: "Yodel", meaning: "Canto tirolês" },
+                { term: "Yoga", meaning: "Disciplina física e mental" },
+                { term: "Yogurt", meaning: "Iogurte" },
+                { term: "Yoke", meaning: "Jugo, canga" },
+                { term: "Yolk", meaning: "Gema de ovo" },
+                { term: "Yonder", meaning: "Lá, além" },
+                { term: "Youngster", meaning: "Jovem, adolescente" },
+                { term: "Yourself", meaning: "Você mesmo" },
+                { term: "Youthful", meaning: "Jovial, juvenil" },
+                { term: "Yowl", meaning: "Uivo, grito" },
+                { term: "Yuan", meaning: "Moeda chinesa" },
+                { term: "Yuca", meaning: "Mandioca" },
+                { term: "Yuck", meaning: "Eca, nojo" },
+                { term: "Yummy", meaning: "Delicioso, saboroso" },
+                { term: "Yuppie", meaning: "Jovem profissional urbano" },
+                { term: "Yacht", meaning: "Iate" },
+                { term: "Yak", meaning: "Animal bovino asiático" },
+                { term: "Yam", meaning: "Inhame" },
+                { term: "Yardstick", meaning: "Padrão, medida" },
+                { term: "Yarn", meaning: "Fio, lã" },
+                { term: "Yawn", meaning: "Bocejo" },
+                { term: "Yearbook", meaning: "Anuário" },
+                { term: "Yearling", meaning: "Animal de um ano" },
+                { term: "Yearn", meaning: "Ansiar, desejar" },
+                { term: "Yeast", meaning: "Fermento" },
+                { term: "Yell", meaning: "Grito, berro" },
+                { term: "Yellowish", meaning: "Amarelado" },
+                { term: "Yelp", meaning: "Grito agudo" },
+                { term: "Yen", meaning: "Moeda japonesa" }
+            ],
+            "Z": [
+                { term: "Zoeira", meaning: "Brincadeira, diversão" },
+                { term: "Zoado", meaning: "Estranho, esquisito" },
+                { term: "Zaralho", meaning: "Bêbado, embriagado" },
+                { term: "Zerado", meaning: "Sem dinheiro, falido" },
+                { term: "Zica", meaning: "Má sorte, azar" },
+                { term: "Zarabatana", meaning: "Pessoa magra e alta" },
+                { term: "Zé povinho", meaning: "Pessoa comum, qualquer um" },
+                { term: "Zé ruela", meaning: "Pessoa desprezível" },
+                { term: "Zangado", meaning: "Irritado, bravo" },
+                { term: "Zarolho", meaning: "Vesgo, estrábico" },
+                { term: "Zás", meaning: "Rapidamente, logo" },
+                { term: "Zebra", meaning: "Coisa rara, incomum" },
+                { term: "Zebu", meaning: "Animal bovino" },
+                { term: "Zeloso", meaning: "Cuidadoso, atento" },
+                { term: "Zênite", meaning: "Ponto máximo, ápice" },
+                { term: "Zepelim", meaning: "Dirigível, aeróstato" },
+                { term: "Zero", meaning: "Nada, nenhum" },
+                { term: "Zeta", meaning: "Letra Z" },
+                { term: "Ziguezague", meaning: "Movimento sinuoso" },
+                { term: "Zimbório", meaning: "Cúpula, abóbada" },
+                { term: "Zinco", meaning: "Elemento metálico" },
+                { term: "Zíper", meaning: "Fecho, zíper" },
+                { term: "Zodíaco", meaning: "Círculo de constelações" },
+                { term: "Zoeira", meaning: "Bagunça, algazarra" },
+                { term: "Zombaria", meaning: "Escárnio, deboche" },
+                { term: "Zona", meaning: "Área, região" },
+                { term: "Zoológico", meaning: "Jardim zoológico" },
+                { term: "Zoró", meaning: "Pessoa astuta, esperta" },
+                { term: "Zumbido", meaning: "Som contínuo" },
+                { term: "Zunir", meaning: "Zumbir, soar" },
+                { term: "Zureta", meaning: "Pessoa excêntrica" },
+                { term: "Zangar", meaning: "Irritar, enfurecer" },
+                { term: "Zarpar", meaning: "Partir, levantar âncora" },
+                { term: "Zelar", meaning: "Cuidar, proteger" },
+                { term: "Zombar", meaning: "Caçoar, ridicularizar" },
+                { term: "Zonear", meaning: "Vaguear, perambular" },
+                { term: "Zumbir", meaning: "Produzir zumbido" },
+                { term: "Zangado", meaning: "Bravo, irritado" },
+                { term: "Zarolho", meaning: "Estrabismo" },
+                { term: "Zás-trás", meaning: "Rapidamente" },
+                { term: "Zebrado", meaning: "Listrado, rajado" },
+                { term: "Zelador", meaning: "Cuidador, guardião" },
+                { term: "Zenital", meaning: "Relativo ao zênite" },
+                { term: "Zeros", meaning: "Múltiplos zero" },
+                { term: "Ziguezagueante", meaning: "Que faz ziguezague" },
+                { term: "Zinco", meaning: "Metal zinco" },
+                { term: "Zipado", meaning: "Fechado com zíper" }
+            ]
+        };
+
+        // Inicialização do dicionário
+        document.addEventListener('DOMContentLoaded', function() {
+            // Gerar menu de letras
+            const lettersMenu = document.getElementById('letters-menu');
+            const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            
+            for (let letter of alphabet) {
+                const button = document.createElement('button');
+                button.className = 'letter-btn';
+                button.textContent = letter;
+                button.setAttribute('data-letter', letter);
+                lettersMenu.appendChild(button);
+            }
+            
+            // Carregar conteúdo da primeira letra
+            loadLetterContent('A');
+            
+            // Adicionar evento de clique para as letras
+            document.querySelectorAll('.letter-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    const letter = this.getAttribute('data-letter');
+                    loadLetterContent(letter);
+                    
+                    // Atualizar botão ativo
+                    document.querySelectorAll('.letter-btn').forEach(btn => {
+                        btn.classList.remove('active');
+                    });
+                    this.classList.add('active');
+                });
+            });
+            
+            // Adicionar evento de pesquisa
+            document.getElementById('search-button').addEventListener('click', performSearch);
+            document.getElementById('search-input').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    performSearch();
+                }
+            });
+            
+            // Inicializar botão A como ativo
+            document.querySelector('.letter-btn').classList.add('active');
+        });
+
+        // Função para carregar o conteúdo de uma letra
+        function loadLetterContent(letter) {
+            const content = document.getElementById('content');
+            content.innerHTML = '';
+            
+            const section = document.createElement('section');
+            section.className = 'letter-section active';
+            section.id = `letter-${letter}`;
+            
+            const title = document.createElement('h2');
+            title.className = 'letter-title';
+            title.textContent = `Letra ${letter}`;
+            section.appendChild(title);
+            
+            const grid = document.createElement('div');
+            grid.className = 'slang-grid';
+            
+            if (slangData[letter]) {
+                slangData[letter].forEach(slang => {
+                    const card = document.createElement('div');
+                    card.className = 'slang-card';
+                    
+                    const term = document.createElement('h3');
+                    term.className = 'slang-term';
+                    term.textContent = slang.term;
+                    
+                    const meaning = document.createElement('p');
+                    meaning.className = 'slang-meaning';
+                    meaning.textContent = slang.meaning;
+                    
+                    const copyBtn = document.createElement('button');
+                    copyBtn.className = 'copy-btn';
+                    copyBtn.textContent = 'Copiar';
+                    copyBtn.addEventListener('click', function() {
+                        copyToClipboard(`${slang.term}: ${slang.meaning}`);
+                    });
+                    
+                    card.appendChild(term);
+                    card.appendChild(meaning);
+                    card.appendChild(copyBtn);
+                    
+                    grid.appendChild(card);
+                });
+            } else {
+                const message = document.createElement('p');
+                message.textContent = 'Nenhuma gíria encontrada para esta letra.';
+                grid.appendChild(message);
+            }
+            
+            section.appendChild(grid);
+            content.appendChild(section);
+        }
+
+        // Função para realizar a pesquisa
+        function performSearch() {
+            const searchTerm = document.getElementById('search-input').value.toLowerCase().trim();
+            
+            if (searchTerm === '') {
+                // Se a pesquisa estiver vazia, voltar para a letra ativa
+                const activeLetter = document.querySelector('.letter-btn.active').getAttribute('data-letter');
+                loadLetterContent(activeLetter);
+                return;
+            }
+            
+            const content = document.getElementById('content');
+            content.innerHTML = '';
+            
+            const section = document.createElement('section');
+            section.className = 'letter-section active';
+            
+            const title = document.createElement('h2');
+            title.className = 'letter-title';
+            title.textContent = `Resultados para: "${searchTerm}"`;
+            section.appendChild(title);
+            
+            const grid = document.createElement('div');
+            grid.className = 'slang-grid';
+            
+            let resultsFound = false;
+            
+            // Procurar em todas as letras
+            for (let letter in slangData) {
+                slangData[letter].forEach(slang => {
+                    if (slang.term.toLowerCase().includes(searchTerm) || 
+                        slang.meaning.toLowerCase().includes(searchTerm)) {
+                        
+                        resultsFound = true;
+                        
+                        const card = document.createElement('div');
+                        card.className = 'slang-card';
+                        
+                        const term = document.createElement('h3');
+                        term.className = 'slang-term';
+                        term.textContent = slang.term;
+                        
+                        const meaning = document.createElement('p');
+                        meaning.className = 'slang-meaning';
+                        meaning.textContent = slang.meaning;
+                        
+                        const copyBtn = document.createElement('button');
+                        copyBtn.className = 'copy-btn';
+                        copyBtn.textContent = 'Copiar';
+                        copyBtn.addEventListener('click', function() {
+                            copyToClipboard(`${slang.term}: ${slang.meaning}`);
+                        });
+                        
+                        card.appendChild(term);
+                        card.appendChild(meaning);
+                        card.appendChild(copyBtn);
+                        
+                        grid.appendChild(card);
+                    }
+                });
+            }
+            
+            if (!resultsFound) {
+                const message = document.createElement('p');
+                message.textContent = 'Nenhuma gíria encontrada com esse termo.';
+                grid.appendChild(message);
+            }
+            
+            section.appendChild(grid);
+            content.appendChild(section);
+        }
+
+        // Função para copiar texto para a área de transferência
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                // Mostrar notificação
+                const notification = document.getElementById('copy-notification');
+                notification.classList.add('show');
+                
+                setTimeout(() => {
+                    notification.classList.remove('show');
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+</html>
