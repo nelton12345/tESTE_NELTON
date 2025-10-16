@@ -1,0 +1,1431 @@
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crustáceos - Biologia e Ecologia</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* ===== RESET E VARIÁVEIS ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #1a5276;
+            --secondary: #3498db;
+            --accent: #f39c12;
+            --success: #27ae60;
+            --danger: #e74c3c;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+            --text: #333;
+            --text-light: #7f8c8d;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text);
+            background-color: #f9f9f9;
+            overflow-x: hidden;
+        }
+
+        /* ===== LAYOUT GERAL ===== */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        section {
+            padding: 80px 0;
+            display: none;
+        }
+
+        section.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ===== CABEÇALHO ===== */
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: var(--shadow);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo i {
+            font-size: 2rem;
+        }
+
+        .logo h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        /* ===== MENU DE NAVEGAÇÃO ===== */
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 20px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 8px 16px;
+            border-radius: 4px;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        nav a:hover, nav a.active {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* ===== HERO SECTION ===== */
+        .hero {
+            background: linear-gradient(rgba(26, 82, 118, 0.8), rgba(52, 152, 219, 0.8)), 
+                        url('https://images.unsplash.com/photo-1559827260-dc66d52bef19?ixlib=rb-4.0.3') center/cover;
+            color: white;
+            text-align: center;
+            padding: 120px 0;
+        }
+
+        .hero h2 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 2rem;
+        }
+        
+
+        .btn {
+            display: inline-block;
+            background-color: var(--accent);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: #e67e22;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        /* ===== SEÇÕES DE CONTEÚDO ===== */
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .section-title h2 {
+            font-size: 2.5rem;
+            color: var(--primary);
+            display: inline-block;
+            margin-bottom: 1rem;
+        }
+
+        .section-title h2::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 4px;
+            background: var(--accent);
+            margin: 10px auto;
+            border-radius: 2px;
+        }
+
+        .section-title p {
+            color: var(--text-light);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .card-img {
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .card-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .card:hover .card-img img {
+            transform: scale(1.1);
+        }
+
+        .card-content {
+            padding: 20px;
+        }
+
+        .card h3 {
+            font-size: 1.4rem;
+            margin-bottom: 10px;
+            color: var(--primary);
+        }
+
+        .card p {
+            color: var(--text-light);
+            margin-bottom: 15px;
+        }
+
+        .feature-list {
+            list-style: none;
+        }
+
+        .feature-list li {
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .feature-list li:last-child {
+            border-bottom: none;
+        }
+
+        .feature-list i {
+            color: var(--accent);
+        }
+
+        /* ===== GALERIA ===== */
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .gallery-item {
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+            height: 200px;
+            cursor: pointer;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.1);
+        }
+
+        .gallery-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 10px;
+            transform: translateY(100%);
+            transition: var(--transition);
+        }
+
+        .gallery-item:hover .gallery-caption {
+            transform: translateY(0);
+        }
+
+        /* ===== TIMELINE ===== */
+        .timeline {
+            position: relative;
+            max-width: 800px;
+            margin: 50px auto;
+        }
+
+        .timeline::after {
+            content: '';
+            position: absolute;
+            width: 6px;
+            background-color: var(--secondary);
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            margin-left: -3px;
+        }
+
+        .timeline-item {
+            padding: 10px 40px;
+            position: relative;
+            width: 50%;
+            box-sizing: border-box;
+        }
+
+        .timeline-item:nth-child(odd) {
+            left: 0;
+        }
+
+        .timeline-item:nth-child(even) {
+            left: 50%;
+        }
+
+        .timeline-content {
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+        }
+
+        .timeline-content h3 {
+            margin-bottom: 10px;
+            color: var(--primary);
+        }
+
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: white;
+            border: 4px solid var(--secondary);
+            border-radius: 50%;
+            top: 20px;
+            z-index: 1;
+        }
+
+        .timeline-item:nth-child(odd)::after {
+            right: -10px;
+        }
+
+        .timeline-item:nth-child(even)::after {
+            left: -10px;
+        }
+
+        /* ===== QUIZ ===== */
+        .quiz-container {
+            background: white;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: var(--shadow);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .quiz-question {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .quiz-options {
+            display: grid;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .quiz-option {
+            padding: 15px;
+            border: 2px solid #eee;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .quiz-option:hover {
+            border-color: var(--secondary);
+        }
+
+        .quiz-option.selected {
+            background-color: rgba(52, 152, 219, 0.1);
+            border-color: var(--secondary);
+        }
+
+        .quiz-option.correct {
+            background-color: rgba(39, 174, 96, 0.1);
+            border-color: var(--success);
+        }
+
+        .quiz-option.incorrect {
+            background-color: rgba(231, 76, 60, 0.1);
+            border-color: var(--danger);
+        }
+
+        .quiz-result {
+            text-align: center;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+            display: none;
+        }
+
+        .quiz-result.show {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .quiz-result.success {
+            background-color: rgba(39, 174, 96, 0.1);
+            border: 1px solid var(--success);
+            color: var(--success);
+        }
+
+        .quiz-result.error {
+            background-color: rgba(231, 76, 60, 0.1);
+            border: 1px solid var(--danger);
+            color: var(--danger);
+        }
+
+        /* ===== MODAL ===== */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal.show {
+            display: flex;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 8px;
+            max-width: 800px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-light);
+            z-index: 10;
+        }
+
+        .modal-body {
+            padding: 30px;
+        }
+
+        .modal-img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            border-radius: 8px 8px 0 0;
+        }
+
+        /* ===== RODAPÉ ===== */
+        footer {
+            background: var(--dark);
+            color: white;
+            padding: 50px 0 20px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .footer-column h3 {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 40px;
+            height: 3px;
+            background: var(--accent);
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+
+        .footer-links a {
+            color: #bdc3c7;
+            text-decoration: none;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .footer-links a:hover {
+            color: white;
+            transform: translateX(5px);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #bdc3c7;
+            font-size: 0.9rem;
+        }
+
+        /* ===== RESPONSIVIDADE ===== */
+        @media (max-width: 992px) {
+            .hero h2 {
+                font-size: 2.5rem;
+            }
+            
+            .section-title h2 {
+                font-size: 2rem;
+            }
+            
+            .timeline::after {
+                left: 31px;
+            }
+            
+            .timeline-item {
+                width: 100%;
+                padding-left: 70px;
+                padding-right: 25px;
+            }
+            
+            .timeline-item:nth-child(even) {
+                left: 0;
+            }
+            
+            .timeline-item::after {
+                left: 21px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            nav ul {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .hero {
+                padding: 80px 0;
+            }
+            
+            .hero h2 {
+                font-size: 2rem;
+            }
+            
+            .hero p {
+                font-size: 1rem;
+            }
+            
+            section {
+                padding: 60px 0;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            nav ul {
+                display: none;
+                flex-direction: column;
+                width: 100%;
+                margin-top: 15px;
+            }
+            
+            nav ul.show {
+                display: flex;
+            }
+            
+            .logo h1 {
+                font-size: 1.5rem;
+            }
+            
+            .section-title h2 {
+                font-size: 1.8rem;
+            }
+            
+            .card {
+                margin-bottom: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Cabeçalho e Navegação -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-crab"></i>
+                    <h1>Crustáceos</h1>
+                </div>
+                <button class="mobile-menu-btn">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <nav>
+                    <ul>
+                        <li><a href="#home" class="nav-link active" data-section="home"><i class="fas fa-home"></i> Início</a></li>
+                        <li><a href="#introducao" class="nav-link" data-section="introducao"><i class="fas fa-info-circle"></i> Introdução</a></li>
+                        <li><a href="#caracteristicas" class="nav-link" data-section="caracteristicas"><i class="fas fa-list"></i> Características</a></li>
+                        <li><a href="#habitat" class="nav-link" data-section="habitat"><i class="fas fa-water"></i> Habitat</a></li>
+                        <li><a href="#reproducao" class="nav-link" data-section="reproducao"><i class="fas fa-egg"></i> Reprodução</a></li>
+                        <li><a href="#grupos" class="nav-link" data-section="grupos"><i class="fas fa-fish"></i> Grupos</a></li>
+                        <li><a href="#importancia" class="nav-link" data-section="importancia"><i class="fas fa-seedling"></i> Importância</a></li>
+                        <li><a href="#curiosidades" class="nav-link" data-section="curiosidades"><i class="fas fa-lightbulb"></i> Curiosidades</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Seção Hero / Home -->
+    <section id="home" class="active">
+        <div class="hero">
+            <div class="container">
+                <h2>Explorando o Mundo dos Crustáceos</h2>
+                <p>Descubra a fascinante diversidade, biologia e ecologia desses incríveis artrópodes aquáticos que desempenham papéis vitais em nossos ecossistemas.</p>
+                <a href="#introducao" class="btn nav-link" data-section="introducao">Começar Exploração <i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+
+        <div class="container" style="padding: 80px 0;">
+            <div class="content-grid">
+                <div class="card">
+                    <div class="card-img">
+                        <img src="img/camarao-2.jpg" alt="Camarão">
+                    </div>
+                    <div class="card-content">
+                        <h3>Diversidade Incrível</h3>
+                        <p>Com mais de 67.000 espécies descritas, os crustáceos variam de microscópicos a gigantes com mais de 3 metros.</p>
+                        <a href="#grupos" class="btn nav-link" data-section="grupos" style="background: var(--primary);">Explorar Grupos</a>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-img">
+                        <img src="img/senho.jpg" alt="Ecologia dos crustáceos">
+                    </div>
+                    <div class="card-content">
+                        <h3>Papel Ecológico Vital</h3>
+                        <p>Essenciais nas cadeias alimentares aquáticas, servindo como consumidores primários e fonte de alimento.</p>
+                        <a href="#importancia" class="btn nav-link" data-section="importancia" style="background: var(--primary);">Saber Mais</a>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-img">
+                        <img src="img/natomia.jpg" alt="Anatomia dos crustáceos">
+                    </div>
+                    <div class="card-content">
+                        <h3>Anatomia Complexa</h3>
+                        <p>Corpo segmentado, exoesqueleto quitinoso e apêndices especializados para diversas funções.</p>
+                        <a href="#caracteristicas" class="btn nav-link" data-section="caracteristicas" style="background: var(--primary);">Ver Características</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Seção Introdução -->
+    <section id="introducao">
+        <div class="container">
+            <div class="section-title">
+                <h2>Introdução aos Crustáceos</h2>
+                <p>Conheça os aspectos fundamentais desses fascinantes artrópodes aquáticos</p>
+            </div>
+            
+            <div class="content-grid">
+                <div class="card">
+                    <div class="card-content">
+                        <h3>O Que São Crustáceos?</h3>
+                        <p>Os crustáceos são um subfilo de artrópodes que inclui animais como caranguejos, lagostas, camarões, cracas, krill e tatuzinhos-de-jardim. São predominantemente aquáticos, embora existam algumas espécies terrestres.</p>
+                        <p>Com mais de 67.000 espécies descritas, representam um dos grupos mais diversos do reino animal, ocupando praticamente todos os ambientes aquáticos do planeta.</p>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-content">
+                        <h3>Classificação Científica</h3>
+                        <ul class="feature-list">
+                            <li><i class="fas fa-chevron-right"></i> <strong>Reino:</strong> Animalia</li>
+                            <li><i class="fas fa-chevron-right"></i> <strong>Filo:</strong> Arthropoda</li>
+                            <li><i class="fas fa-chevron-right"></i> <strong>Subfilo:</strong> Crustacea</li>
+                            <li><i class="fas fa-chevron-right"></i> <strong>Classes principais:</strong> Malacostraca, Maxillopoda, Branchiopoda</li>
+                            <li><i class="fas fa-chevron-right"></i> <strong>Ordens conhecidas:</strong> Decapoda, Isopoda, Amphipoda, Cirripedia</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card" style="margin-top: 30px;">
+                <div class="card-content">
+                    <h3>Distribuição e Diversidade</h3>
+                    <p>Os crustáceos estão presentes em todos os oceanos, desde as regiões polares até os trópicos, e desde a zona entre-marés até as profundezas abissais. Também habitam águas doces, como rios, lagos e aquíferos subterrâneos.</p>
+                    <p>Algumas espécies adaptaram-se à vida terrestre, como o tatuzinho-de-jardim, que vive em ambientes úmidos sob folhas, pedras e troncos em decomposição.</p>
+                    
+                    <div class="gallery">
+                        <div class="gallery-item" data-modal="modal1">
+                            <img src="img/caranguejo.jpg" alt="Caranguejo">
+                            <div class="gallery-caption">Caranguejo</div>
+                        </div>
+                        <div class="gallery-item" data-modal="modal2">
+                            <img src="img/lagosta.avif" alt="Lagosta">
+                            <div class="gallery-caption">Lagosta</div>
+                        </div>
+                        <div class="gallery-item" data-modal="modal3">
+                            <img src="img/camarao-2.jpg" alt="Camarão">
+                            <div class="gallery-caption">Camarão</div>
+                        </div>
+                        <div class="gallery-item" data-modal="modal4">
+                            <img src="img/cracas.jpg" alt="Cracas">
+                            <div class="gallery-caption">Cracas</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Seção Características -->
+    <section id="caracteristicas">
+        <div class="container">
+            <div class="section-title">
+                <h2>Características Gerais</h2>
+                <p>Anatomia e adaptações que definem os crustáceos</p>
+            </div>
+            
+            <div class="content-grid">
+                <div class="card">
+                    <div class="card-img">
+                        <img src="img/anatomia.webp" alt="Exoesqueleto de crustáceo">
+                    </div>
+                    <div class="card-content">
+                        <h3>Exoesqueleto</h3>
+                        <p>Os crustáceos possuem um exoesqueleto quitinoso reforçado com carbonato de cálcio, que fornece proteção e suporte estrutural. Este exoesqueleto é trocado periodicamente através do processo de muda (ecdise) para permitir o crescimento.</p>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-img">
+                        <img src="img/no geral.gif" alt="Apêndices de crustáceo">
+                    </div>
+                    <div class="card-content">
+                        <h3>Apêndices Especializados</h3>
+                        <p>Possuem apêndices birremes (divididos em dois ramos) adaptados para diversas funções: antenas para sensibilidade, mandíbulas para alimentação, maxilípedes para manipulação de alimentos, e pernas para locomoção.</p>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-img">
+                        <img src="img/respira.jpg" alt="Sistema respiratório">
+                    </div>
+                    <div class="card-content">
+                        <h3>Sistema Respiratório</h3>
+                        <p>A maioria dos crustáceos respira através de brânquias, localizadas nas bases dos apêndices ou em câmaras branquiais especiais. Espécies menores podem realizar trocas gasosas diretamente através do exoesqueleto.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card" style="margin-top: 30px;">
+                <div class="card-content">
+                    <h3>Estrutura Corporal Detalhada</h3>
+                    <div class="content-grid">
+                        <div>
+                            <h4>Cefalotórax e Abdômen</h4>
+                            <p>O corpo é dividido em cefalotórax (fusão de cabeça e tórax) e abdômen. O cefalotórax é coberto por uma carapaça, enquanto o abdômen pode ser reduzido ou bem desenvolvido, dependendo do grupo.</p>
+                        </div>
+                        <div>
+                            <h4>Sistema Nervoso</h4>
+                            <p>Possuem um sistema nervoso ganglionar ventral, com um cérebro formado pela fusão de gânglios supraesofágicos. Órgãos sensoriais incluem olhos compostos, estátocistos para equilíbrio e quimiorreceptores.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Seção Habitat -->
+    <section id="habitat">
+        <div class="container">
+            <div class="section-title">
+                <h2>Habitat e Distribuição</h2>
+                <p>Os diversos ambientes ocupados pelos crustáceos</p>
+            </div>
+            
+            <div class="content-grid">
+                <div class="card">
+                    <div class="card-img">
+                        <img src="https://images.unsplash.com/photo-1559827260-dc66d52bef19?ixlib=rb-4.0.3" alt="Ambientes marinhos">
+                    </div>
+                    <div class="card-content">
+                        <h3>Ambientes Marinhos</h3>
+                        <p>Os crustáceos dominam os oceanos, desde a zona entre-marés até as fossas abissais. Incluem espécies bentônicas (de fundo), pelágicas (de coluna d'água) e intersticiais (entre grãos de areia).</p>
+                        <ul class="feature-list">
+                            <li><i class="fas fa-water"></i> Recifes de coral</li>
+                            <li><i class="fas fa-water"></i> Fundos arenosos e lodosos</li>
+                            <li><i class="fas fa-water"></i> Fontes hidrotermais</li>
+                            <li><i class="fas fa-water"></i> Zonas abissais</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-img">
+                        <img src="img/agua.webp" alt="Água doce">
+                    </div>
+                    <div class="card-content">
+                        <h3>Água Doce</h3>
+                        <p>Rios, lagos, córregos e aquíferos subterrâneos abrigam diversas espécies de crustáceos, incluindo camarões, caranguejos e cracas de água doce, além de microcrustáceos como cladóceros e copépodes.</p>
+                        <ul class="feature-list">
+                            <li><i class="fas fa-tint"></i> Rios e lagos</li>
+                            <li><i class="fas fa-tint"></i> Córregos e nascentes</li>
+                            <li><i class="fas fa-tint"></i> Aquíferos subterrâneos</li>
+                            <li><i class="fas fa-tint"></i> Poças temporárias</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-img">
+                        <img src="img/terra.jpg" alt="Ambientes terrestres">
+                    </div>
+                    <div class="card-content">
+                        <h3>Ambientes Terrestres</h3>
+                        <p>Algumas espécies adaptaram-se à vida em terra, como o tatuzinho-de-jardim e o caranguejo-eremita terrestre. Estes ainda dependem de ambientes úmidos e retornam à água para reprodução.</p>
+                        <ul class="feature-list">
+                            <li><i class="fas fa-tree"></i> Florestas úmidas</li>
+                            <li><i class="fas fa-tree"></i> Cavernas</li>
+                            <li><i class="fas fa-tree"></i> Zonas costeiras</li>
+                            <li><i class="fas fa-tree"></i> Jardins e hortas</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Seção Reprodução -->
+    <section id="reproducao">
+        <div class="container">
+            <div class="section-title">
+                <h2>Reprodução e Ciclo de Vida</h2>
+                <p>Estratégias reprodutivas e desenvolvimento dos crustáceos</p>
+            </div>
+            
+            <div class="content-grid">
+                <div class="card">
+                    <div class="card-content">
+                        <h3>Reprodução Sexuada</h3>
+                        <p>A maioria dos crustáceos é dióica (sexos separados), com fertilização geralmente interna. Muitas espécies marinhas realizam migrações reprodutivas ou sincronizam a liberação de gametes com ciclos lunares ou marés.</p>
+                        <p>Os machos frequentemente possuem apêndices modificados para transferência de espermatóforos, e as fêmeas podem armazenar esperma por longos períodos antes da fertilização.</p>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-content">
+                        <h3>Desenvolvimento</h3>
+                        <p>O desenvolvimento é geralmente indireto, passando por estágios larvais como náuplio, zoea, mysis ou megalopa, dependendo do grupo. Estas larvas fazem parte do plâncton antes de se assentarem e se transformarem em juvenis.</p>
+                        <p>Algumas espécies, especialmente de água doce, apresentam desenvolvimento direto, com os ovos eclodindo em miniatura dos adultos.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card" style="margin-top: 30px;">
+                <div class="card-content">
+                    <h3>Ciclo de Vida dos Decápodes</h3>
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-content">
+                                <h3>Ovo</h3>
+                                <p>Os ovos são carregados pela fêmea em seus pleópodes (apêndices abdominais) até a eclosão, recebendo oxigenação e proteção.</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-content">
+                                <h3>Larva Náuplio</h3>
+                                <p>Primeiro estágio larval, com apenas três pares de apêndices. Alimenta-se de reservas vitelinas e depois de fitoplâncton.</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-content">
+                                <h3>Larva Zoea</h3>
+                                <p>Apresenta espinhos dorsais e laterais para flutuação. Desenvolve mais apêndices e começa a se alimentar de zooplâncton.</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-content">
+                                <h3>Larva Mysis/Megalopa</h3>
+                                <p>Estágio mais avançado, com apêndices bem desenvolvidos. Em camarões é chamada mysis, em caranguejos é megalopa.</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-content">
+                                <h3>Juvenil</h3>
+                                <p>Assenta no fundo e sofre metamorfose para a forma juvenil, semelhante ao adulto mas sexualmente imaturo.</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-content">
+                                <h3>Adulto</h3>
+                                <p>Alcança maturidade sexual após várias mudas. Pode viver de alguns meses a várias décadas, dependendo da espécie.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Seção Grupos Principais -->
+    <section id="grupos">
+        <div class="container">
+            <div class="section-title">
+                <h2>Principais Grupos de Crustáceos</h2>
+                <p>Diversidade taxonômica e características distintivas</p>
+            </div>
+            
+            <div class="content-grid">
+                <div class="card">
+                    <div class="card-img">
+                        <img src="img/decapodes.jpg" alt="Camarão">
+                    </div>
+                    <div class="card-content">
+                        <h3>Decápodes</h3>
+                        <p>Incluem camarões, lagostas, caranguejos e siris. Caracterizam-se por terem cinco pares de pernas torácicas, sendo o primeiro par modificado em pinças (quelas). São geralmente de médio a grande porte e incluem muitas espécies de importância comercial.</p>
+                        <ul class="feature-list">
+                            <li><i class="fas fa-check"></i> 5 pares de pernas torácicas</li>
+                            <li><i class="fas fa-check"></i> Primeiro par com pinças</li>
+                            <li><i class="fas fa-check"></i> Cefalotórax coberto por carapaça</li>
+                            <li><i class="fas fa-check"></i> Abdômen bem desenvolvido</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-img">
+                        <img src="img/cirripedia.webp" alt="Cirrípedes">
+                    </div>
+                    <div class="card-content">
+                        <h3>Cirrípedes</h3>
+                        <p>Compreendem as cracas, crustáceos sésseis que vivem fixos a substratos como rochas, cascos de navios, baleias e tartarugas. Possuem placas calcárias que formam uma concha protetora e se alimentam filtrando partículas da água com seus apêndices modificados (cirros).</p>
+                        <ul class="feature-list">
+                            <li><i class="fas fa-check"></i> Sésseis (fixos ao substrato)</li>
+                            <li><i class="fas fa-check"></i> Concha de placas calcárias</li>
+                            <li><i class="fas fa-check"></i> Alimentação por filtração</li>
+                            <li><i class="fas fa-check"></i> Larva náuplio livre-natante</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-img">
+                        <img src="img/cirripedia.jpg" alt="Copépodes">
+                    </div>
+                    <div class="card-content">
+                        <h3>Copépodes</h3>
+                        <p>Pequenos crustáceos que formam uma parte essencial do zooplâncton. São o grupo mais numeroso de crustáceos e servem de alimento para muitos animais marinhos, incluindo baleias. Possuem um único olho naupliar e antenas longas para natação.</p>
+                        <ul class="feature-list">
+                            <li><i class="fas fa-check"></i> Componente principal do zooplâncton</li>
+                            <li><i class="fas fa-check"></i> Corpo alongado e segmentado</li>
+                            <li><i class="fas fa-check"></i> Antenas longas para natação</li>
+                            <li><i class="fas fa-check"></i> Olho naupliar único</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="content-grid" style="margin-top: 30px;">
+                <div class="card">
+                    <div class="card-content">
+                        <h3>Isópodes</h3>
+                        <p>Incluem os tatuzinhos-de-jardim e espécies marinhas como o bicho-de-conta gigante. Possuem corpo achatado dorsoventralmente e sete pares de pernas semelhantes. Muitos são terrestres, vivendo em ambientes úmidos.</p>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-content">
+                        <h3>Anfípodes</h3>
+                        <p>Conhecidos como pulgas-da-praia, possuem corpo comprimido lateralmente e pernas adaptadas para saltar. Incluem espécies marinhas, de água doce e terrestres, muitas vivendo em sedimentos.</p>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-content">
+                        <h3>Branchiópodes</h3>
+                        <p>Incluem as dáfnias (pulgas-d'água) e os camarões-de-salmuera. Possuem apêndices foliáceos que funcionam como brânquias e são importantes em ambientes de água doce temporários.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Seção Importância -->
+    <section id="importancia">
+        <div class="container">
+            <div class="section-title">
+                <h2>Importância Ecológica e Econômica</h2>
+                <p>Papel dos crustáceos nos ecossistemas e para a humanidade</p>
+            </div>
+            
+            <div class="content-grid">
+                <div class="card">
+                    <div class="card-img">
+                        <img src="img/comida.jpg" alt="Camarões para alimentação">
+                    </div>
+                    <div class="card-content">
+                        <h3>Importância Econômica</h3>
+                        <p>Os crustáceos têm grande relevância para as atividades humanas:</p>
+                        <ul class="feature-list">
+                            <li><i class="fas fa-utensils"></i> <strong>Alimentação:</strong> Camarões, lagostas e caranguejos são iguarias mundialmente apreciadas</li>
+                            <li><i class="fas fa-industry"></i> <strong>Indústria pesqueira:</strong> Movimentam bilhões de dólares anualmente</li>
+                            <li><i class="fas fa-fish"></i> <strong>Aqüicultura:</strong> Cultivo de camarões e outros crustáceos para alimentação</li>
+                            <li><i class="fas fa-pills"></i> <strong>Biotecnologia:</strong> Quitosana, extraída do exoesqueleto, tem aplicações médicas e industriais</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-content">
+                        <h3>Importância Ecológica</h3>
+                        <p>Os crustáceos desempenham papéis vitais nos ecossistemas aquáticos:</p>
+                        <ul class="feature-list">
+                            <li><i class="fas fa-recycle"></i> <strong>Consumidores primários:</strong> Espécies como o krill alimentam-se de fitoplâncton, transferindo energia para níveis tróficos superiores</li>
+                            <li><i class="fas fa-recycle"></i> <strong>Decompositores:</strong> Muitos crustáceos bentônicos participam da reciclagem de nutrientes</li>
+                            <li><i class="fas fa-recycle"></i> <strong>Bioindicadores:</strong> Espécies sensíveis são usadas para monitorar a qualidade da água</li>
+                            <li><i class="fas fa-recycle"></i> <strong>Engenheiros de ecossistemas:</strong> Alguns constroem tocas que modificam o habitat</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card" style="margin-top: 30px;">
+                <div class="card-content">
+                    <h3>O Krill Antártico</h3>
+                    <div class="content-grid">
+                        <div>
+                            <p>O krill antártico (<em>Euphausia superba</em>) forma a base da cadeia alimentar no Oceano Antártico, sustentando baleias, pinguins, focas e aves marinhas. Sua biomassa é estimada em 379 milhões de toneladas, tornando-se uma das espécies mais abundantes do planeta.</p>
+                            <p>Além de seu papel ecológico, o krill é explorado comercialmente para produção de óleo rico em ômega-3 e ração para aqüicultura.</p>
+                        </div>
+                        <div>
+                            <div class="gallery-item">
+                                <img src="https://images.unsplash.com/photo-1559767949-0feaaeb5f0c6?ixlib=rb-4.0.3" alt="Krill antártico">
+                                <div class="gallery-caption">Krill Antártico</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Seção Curiosidades -->
+    <section id="curiosidades">
+        <div class="container">
+            <div class="section-title">
+                <h2>Curiosidades Científicas</h2>
+                <p>Fatos fascinantes sobre os crustáceos</p>
+            </div>
+            
+            <div class="content-grid">
+                <div class="card">
+                    <div class="card-img">
+                        <img src="img/morte.jpg" alt="Camarão-louva-a-deus">
+                    </div>
+                    <div class="card-content">
+                        <h3><a href="https://youtu.be/Pphqz9fuips?si=W-LrTcDPuFUxLjVG">Camarão-louva-a-deus</a></h3>
+                        <p>Este camarão possui uma das visões mais complexas do reino animal, capaz de ver luz polarizada e cores ultravioleta. Suas garras podem se mover tão rapidamente que criam bolhas de cavitação que, ao colapsarem, emitem luz e calor suficiente para atordoar presas.</p>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-content">
+                        <img src="img/bonito.jpg" alt="Caranguejo-eremita">
+                        <h3>Caranguejo-eremita</h3>
+                        <p>Diferente de outros crustáceos, o caranguejo-eremita possui um abdômen mole e desprotegido, obrigando-o a habitar conchas de moluscos vazias para proteção. Conforme cresce, precisa encontrar conchas maiores, podendo até "negociar" trocas com outros caranguejos.</p>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-content">
+                        <img src="img/vivo.jpg" alt="Lagosta como fóssil vivo">
+                        <h3>Lagosta como fóssil vivo</h3>
+                        <p>As lagostas são consideradas "fósseis vivos" pois seu plano corporal praticamente não mudou em 100 milhões de anos. Além disso, não mostram sinais de senescência - não enfraquecem nem perdem fertilidade com a idade, podendo viver décadas se não forem predadas.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="card" style="margin-top: 30px;">
+                <div class="card-content">
+                    <h3>Quiz Interativo: Teste seu Conhecimento</h3>
+                    <div class="quiz-container">
+                        <div class="quiz-question" id="question">Quantos pares de antenas a maioria dos crustáceos possui?</div>
+                        <div class="quiz-options">
+                            <div class="quiz-option" data-correct="false">Um par</div>
+                            <div class="quiz-option" data-correct="true">Dois pares</div>
+                            <div class="quiz-option" data-correct="false">Três pares</div>
+                            <div class="quiz-option" data-correct="false">Nenhum</div>
+                        </div>
+                        
+                        <button class="btn" id="submit-quiz" style="background: var(--primary);">Verificar Resposta</button>
+                        
+                        <div class="quiz-result" id="quiz-result">
+                            <!-- Resultado será inserido aqui via JavaScript -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modais para Galeria -->
+    <div class="modal" id="modal1">
+        <div class="modal-content">
+            <button class="modal-close"><i class="fas fa-times"></i></button>
+            <img src="img/caranguejo.jpg" alt="Caranguejo" class="modal-img">
+            <div class="modal-body">
+                <h3>Caranguejo</h3>
+                <p>Os caranguejos são crustáceos da infraordem Brachyura, caracterizados por terem um corpo achatado dorsoventralmente, um abdômen reduzido dobrado sob o cefalotórax, e um primeiro par de pernas modificado em pinças robustas.</p>
+                <p>Existem mais de 6.800 espécies de caranguejos, adaptadas a diversos ambientes, desde as profundezas oceânicas até ambientes terrestres. Muitos são onívoros, alimentando-se de algas, moluscos, vermes e detritos.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="modal2">
+        <div class="modal-content">
+            <button class="modal-close"><i class="fas fa-times"></i></button>
+            <img src="img/lagosta.avif" alt="Lagosta" class="modal-img">
+            <div class="modal-body">
+                <h3>Lagosta</h3>
+                <p>As lagostas são crustáceos decápodes da família Nephropidae. Possuem um corpo alongado com um abdômen musculoso que lhes permite nadar rapidamente para trás quando ameaçadas.</p>
+                <p>As lagostas são animais noturnos que se escondem em fendas durante o dia. São consideradas uma iguaria em muitas culturas, sendo a lagosta-americana (<em>Homarus americanus</em>) uma das espécies mais comercializadas.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="modal3">
+        <div class="modal-content">
+            <button class="modal-close"><i class="fas fa-times"></i></button>
+            <img src="img/camarao-2.jpg" alt="Camarão" class="modal-img">
+            <div class="modal-body">
+                <h3>Camarão</h3>
+                <p>Os camarões são crustáceos decápodes da infraordem Caridea. Possuem um corpo semitransparente e comprimido lateralmente, com um rostro (extensão da carapaça) projetado para a frente.</p>
+                <p>São animais principalmente marinhos, embora existam espécies de água doce. Muitos são nadadores ativos e formam cardumes. Os camarões têm grande importância comercial, sendo amplamente cultivados em aqüicultura para alimentação humana.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="modal4">
+        <div class="modal-content">
+            <button class="modal-close"><i class="fas fa-times"></i></button>
+            <img src="img/cracas.jpg" alt="Cracas" class="modal-img">
+            <div class="modal-body">
+                <h3>Cracas</h3>
+                <p>As cracas são crustáceos da infraclasse Cirripedia, caracterizados por serem sésseis na fase adulta. Vivem fixas a substratos duros como rochas, cascos de navios, ou mesmo outros animais como baleias e tartarugas.</p>
+                <p>Possuem uma concha formada por placas calcárias e se alimentam estendendo seus apêndices modificados (cirros) para filtrar partículas da água. As larvas são de vida livre, dispersando-se antes de se fixarem permanentemente.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Rodapé -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>Crustáceos</h3>
+                    <p>Site educativo sobre a biologia, ecologia e importância dos crustáceos. Desenvolvido com fins acadêmicos e de divulgação científica.</p>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Navegação</h3>
+                    <ul class="footer-links">
+                        <li><a href="#home" class="nav-link" data-section="home"><i class="fas fa-chevron-right"></i> Início</a></li>
+                        <li><a href="#introducao" class="nav-link" data-section="introducao"><i class="fas fa-chevron-right"></i> Introdução</a></li>
+                        <li><a href="#caracteristicas" class="nav-link" data-section="caracteristicas"><i class="fas fa-chevron-right"></i> Características</a></li>
+                        <li><a href="#habitat" class="nav-link" data-section="habitat"><i class="fas fa-chevron-right"></i> Habitat</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Mais Conteúdo</h3>
+                    <ul class="footer-links">
+                        <li><a href="#reproducao" class="nav-link" data-section="reproducao"><i class="fas fa-chevron-right"></i> Reprodução</a></li>
+                        <li><a href="#grupos" class="nav-link" data-section="grupos"><i class="fas fa-chevron-right"></i> Grupos Principais</a></li>
+                        <li><a href="#importancia" class="nav-link" data-section="importancia"><i class="fas fa-chevron-right"></i> Importância</a></li>
+                        <li><a href="#curiosidades" class="nav-link" data-section="curiosidades"><i class="fas fa-chevron-right"></i> Curiosidades</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Recursos</h3>
+                    <ul class="footer-links">
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Glossário Científico</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Referências Bibliográficas</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Links Úteis</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Sobre o Projeto</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; 2023 Site Educativo sobre Crustáceos. Desenvolvido para fins acadêmicos. Todas as imagens são de domínio público ou utilizadas para fins educativos.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // ===== NAVEGAÇÃO ENTRE SEÇÕES =====
+        document.addEventListener('DOMContentLoaded', function() {
+            // Elementos de navegação
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('section');
+            const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+            const navMenu = document.querySelector('nav ul');
+            
+            // Função para alternar entre seções
+            function switchSection(sectionId) {
+                // Remover classe active de todas as seções e links
+                sections.forEach(section => section.classList.remove('active'));
+                navLinks.forEach(link => link.classList.remove('active'));
+                
+                // Adicionar classe active à seção e link correspondentes
+                document.getElementById(sectionId).classList.add('active');
+                document.querySelector(`.nav-link[data-section="${sectionId}"]`).classList.add('active');
+                
+                // Fechar menu móvel se estiver aberto
+                if (navMenu.classList.contains('show')) {
+                    navMenu.classList.remove('show');
+                }
+                
+                // Scroll para o topo
+                window.scrollTo(0, 0);
+            }
+            
+            // Adicionar event listeners aos links de navegação
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const sectionId = this.getAttribute('data-section');
+                    switchSection(sectionId);
+                });
+            });
+            
+            // Menu móvel
+            mobileMenuBtn.addEventListener('click', function() {
+                navMenu.classList.toggle('show');
+            });
+            
+            // ===== GALERIA E MODAIS =====
+            const galleryItems = document.querySelectorAll('.gallery-item');
+            const modals = document.querySelectorAll('.modal');
+            const modalCloseButtons = document.querySelectorAll('.modal-close');
+            
+            // Abrir modal ao clicar em item da galeria
+            galleryItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    const modalId = this.getAttribute('data-modal');
+                    document.getElementById(modalId).classList.add('show');
+                });
+            });
+            
+            // Fechar modal
+            modalCloseButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    this.closest('.modal').classList.remove('show');
+                });
+            });
+            
+            // Fechar modal ao clicar fora do conteúdo
+            modals.forEach(modal => {
+                modal.addEventListener('click', function(e) {
+                    if (e.target === this) {
+                        this.classList.remove('show');
+                    }
+                });
+            });
+            
+            // ===== QUIZ INTERATIVO =====
+            const quizOptions = document.querySelectorAll('.quiz-option');
+            const submitQuizBtn = document.getElementById('submit-quiz');
+            const quizResult = document.getElementById('quiz-result');
+            
+            let selectedOption = null;
+            
+            // Selecionar opção do quiz
+            quizOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    // Remover seleção anterior
+                    quizOptions.forEach(opt => opt.classList.remove('selected'));
+                    
+                    // Selecionar nova opção
+                    this.classList.add('selected');
+                    selectedOption = this;
+                });
+            });
+            
+            // Verificar resposta do quiz
+            submitQuizBtn.addEventListener('click', function() {
+                if (!selectedOption) {
+                    alert('Por favor, selecione uma resposta.');
+                    return;
+                }
+                
+                const isCorrect = selectedOption.getAttribute('data-correct') === 'true';
+                
+                // Mostrar resultado
+                quizResult.className = 'quiz-result show ' + (isCorrect ? 'success' : 'error');
+                quizResult.innerHTML = isCorrect ? 
+                    '<i class="fas fa-check-circle"></i> Correto! A maioria dos crustáceos possui dois pares de antenas.' :
+                    '<i class="fas fa-times-circle"></i> Incorreto. A resposta certa é: Dois pares.';
+                
+                // Destacar opções corretas/incorretas
+                quizOptions.forEach(option => {
+                    if (option.getAttribute('data-correct') === 'true') {
+                        option.classList.add('correct');
+                    } else if (option === selectedOption && !isCorrect) {
+                        option.classList.add('incorrect');
+                    }
+                });
+            });
+            
+            // ===== ANIMAÇÕES ADICIONAIS =====
+            // Adicionar efeito de digitação ao título do hero
+            const heroTitle = document.querySelector('.hero h2');
+            const originalText = heroTitle.textContent;
+            heroTitle.textContent = '';
+            
+            let i = 0;
+            const typeWriter = () => {
+                if (i < originalText.length) {
+                    heroTitle.textContent += originalText.charAt(i);
+                    i++;
+                    setTimeout(typeWriter, 50);
+                }
+            };
+            
+            // Iniciar animação apenas na seção home
+            if (document.getElementById('home').classList.contains('active')) {
+                setTimeout(typeWriter, 500);
+            }
+            
+            // Observador de interseção para animações ao scroll
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+            
+            // Observar cards para animação
+            document.querySelectorAll('.card').forEach(card => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                observer.observe(card);
+            });
+        });
+    </script>
+</body>
+</html>
